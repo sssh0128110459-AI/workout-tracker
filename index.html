@@ -34,11 +34,11 @@
 
     /* 冰島苔原：黑綠為主 */
     body.iceland {
-      --bg: #050806;         /* 接近黑的苔原夜色 */
-      --card: #101a12;       /* 深墨綠卡片 */
-      --text: #e5f3e9;       /* 帶綠的暖白字 */
-      --subtext: #9bb8a6;    /* 淡綠灰副文字 */
-      --accent: #2faa6a;     /* 冰冷鮮綠做點綴 */
+      --bg: #050806;
+      --card: #101a12;
+      --text: #e5f3e9;
+      --subtext: #9bb8a6;
+      --accent: #2faa6a;
       --accent-soft: #12251a;
       --border: #35533f;
       --input-bg: #0d1510;
@@ -112,7 +112,6 @@
       color: var(--subtext);
     }
 
-    /* 日期列 */
     .date-row {
       display: flex;
       align-items: center;
@@ -124,11 +123,6 @@
     .date-text {
       font-size: 15px;
       font-weight: 600;
-    }
-
-    .date-nav {
-      display: flex;
-      gap: 6px;
     }
 
     .btn {
@@ -183,6 +177,7 @@
     .group-toggle {
       font-size: 18px;
       opacity: 0.7;
+      transition: transform 0.15s ease;
     }
 
     .sub-list {
@@ -352,26 +347,25 @@
   </header>
 
   <main>
-    <!-- 日期：自動今天 + 前一天 / 後一天 -->
+    <!-- 上次訓練 -->
     <section class="card">
       <div class="section-title">
-        <span>📅 訓練日期</span>
+        <span>📅 上次訓練</span>
       </div>
       <div class="date-row">
-        <div class="date-text" id="dateText"></div>
-        <div class="date-nav">
-          <button class="btn" id="prevDayBtn">← 前一天</button>
-          <button class="btn" id="nextDayBtn">後一天 →</button>
-        </div>
+        <div class="date-text" id="dateText">尚未有訓練紀錄</div>
       </div>
-      <div class="section-sub">日期會自動抓今天，你只要切換查看前後的訓練即可。</div>
+      <div class="section-sub">
+        打開這個頁面時，會自動載入你<b>上一次儲存的訓練內容</b>。<br>
+        你今天練完按「儲存」後，這一筆就會變成下一次打開時看到的「上次訓練」。
+      </div>
     </section>
 
     <!-- 訓練項目 -->
     <section class="card">
       <div class="section-title">
         <span>💪 訓練項目</span>
-        <span class="section-sub">展開後可直接填重量 / 次數 / 組數；拖曳可調整順序。</span>
+        <span class="section-sub">展開後可直接填槓片 kg / 次數 / 組數；拖曳可調整順序。</span>
       </div>
 
       <div id="groupsContainer">
@@ -389,7 +383,7 @@
                 <div class="sub-muscle">胸大肌 / 肱三頭肌</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量 kg">
+                <input class="weight-input" type="number" placeholder="槓片 kg">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
@@ -402,7 +396,7 @@
                 <div class="sub-muscle">上胸 / 肱三頭肌</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量 kg">
+                <input class="weight-input" type="number" placeholder="槓片 kg">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
@@ -415,7 +409,7 @@
                 <div class="sub-muscle">胸大肌伸展</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量 kg">
+                <input class="weight-input" type="number" placeholder="槓片 kg">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
@@ -439,7 +433,7 @@
                 <div class="sub-muscle">背闊肌 / 肱二頭肌</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="負重 kg">
+                <input class="weight-input" type="number" placeholder="槓片 / 負重 kg">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
@@ -452,7 +446,7 @@
                 <div class="sub-muscle">背闊肌</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量 kg">
+                <input class="weight-input" type="number" placeholder="槓片 kg">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
@@ -465,7 +459,7 @@
                 <div class="sub-muscle">菱形肌 / 斜方肌 / 二頭</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量 kg">
+                <input class="weight-input" type="number" placeholder="槓片 kg">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
@@ -489,7 +483,7 @@
                 <div class="sub-muscle">股四頭 / 臀</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量 kg">
+                <input class="weight-input" type="number" placeholder="槓片 kg">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
@@ -502,7 +496,7 @@
                 <div class="sub-muscle">股四頭 / 臀</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量 kg">
+                <input class="weight-input" type="number" placeholder="槓片 kg">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
@@ -515,7 +509,7 @@
                 <div class="sub-muscle">腿後肌 / 臀</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量 kg">
+                <input class="weight-input" type="number" placeholder="槓片 kg">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
@@ -539,7 +533,7 @@
                 <div class="sub-muscle">三角肌前中束</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量 kg">
+                <input class="weight-input" type="number" placeholder="槓片 kg">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
@@ -552,7 +546,7 @@
                 <div class="sub-muscle">三角肌中束</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量 kg">
+                <input class="weight-input" type="number" placeholder="槓片 kg">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
@@ -614,7 +608,7 @@
       </div>
 
       <button class="btn-primary" id="saveBtn" style="width:100%;margin-top:10px;">
-        💾 儲存今天的訓練
+        💾 儲存這次訓練（記為今天）
       </button>
       <div id="saveStatus" class="status-text"></div>
     </section>
@@ -625,7 +619,7 @@
         <span>📊 歷史查詢</span>
       </div>
       <div class="history-select-row">
-        <span class="section-sub">選一個動作，查看不同日期的重量 / 次數 / 組數：</span>
+        <span class="section-sub">選一個動作，查看不同日期的槓片 kg / 次數 / 組數：</span>
         <select id="historyExerciseSelect">
           <option value="">請選擇動作</option>
         </select>
@@ -639,26 +633,11 @@
   <script>
     const STORAGE_KEY = "trainingV3";
 
-    // ===== 日期處理 =====
-    let currentDate = new Date();
-
     function formatDate(d) {
       const y = d.getFullYear();
       const m = String(d.getMonth() + 1).padStart(2, "0");
       const day = String(d.getDate()).padStart(2, "0");
       return `${y}-${m}-${day}`;
-    }
-
-    function formatDisplay(d) {
-      const y = d.getFullYear();
-      const m = d.getMonth() + 1;
-      const day = d.getDate();
-      return `${y} / ${m} / ${day}`;
-    }
-
-    function updateDateDisplay() {
-      document.getElementById("dateText").textContent = formatDisplay(currentDate);
-      loadDataForDate(formatDate(currentDate));
     }
 
     // ===== 儲存 / 讀取 =====
@@ -676,16 +655,19 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     }
 
-    function loadDataForDate(dateStr) {
-      const all = loadAll();
-      const found = all.find((d) => d.date === dateStr);
-
-      // 清空所有輸入
+    function clearAllInputs() {
       document.querySelectorAll(".sub-row").forEach((row) => {
         row.querySelector(".weight-input").value = "";
         row.querySelector(".reps-input").value = "";
         row.querySelector(".sets-input").value = "";
       });
+    }
+
+    function loadDataForDate(dateStr) {
+      const all = loadAll();
+      const found = all.find((d) => d.date === dateStr);
+
+      clearAllInputs();
 
       if (found && Array.isArray(found.records)) {
         found.records.forEach((r) => {
@@ -697,9 +679,9 @@
             row.querySelector(".sets-input").value = r.sets ?? "";
           }
         });
-        setStatus("已載入 " + dateStr + " 的紀錄", "ok");
+        setStatus("已載入 " + dateStr + " 的訓練紀錄。", "ok");
       } else {
-        setStatus("此日期尚無紀錄，可以開始記錄。", "warn");
+        setStatus("尚未有這天的紀錄。", "warn");
       }
     }
 
@@ -725,7 +707,7 @@
             records.push({
               group: groupName,
               name,
-              weight: weight ? Number(weight) : null,
+              weight: weight ? Number(weight) : null, // 槓片總重
               reps: reps ? Number(reps) : null,
               sets: sets ? Number(sets) : null,
             });
@@ -740,7 +722,6 @@
       const all = loadAll();
       const set = new Set();
 
-      // 把目前 UI 的動作名也加進來（即使還沒紀錄過）
       document.querySelectorAll(".sub-row").forEach((row) => {
         const name = row.getAttribute("data-name");
         if (name) set.add(name);
@@ -801,7 +782,7 @@
         div.innerHTML = `
           <div class="history-date">${item.date}</div>
           <div class="history-meta">
-            <div>${item.weight ?? "-"} kg × ${item.reps ?? "-"} 下</div>
+            <div>${item.weight ?? "-"} kg 槓片 × ${item.reps ?? "-"} 下</div>
             <div>${item.sets ?? "-"} 組</div>
           </div>
         `;
@@ -839,7 +820,7 @@
         const afterElement = getDragAfterElement(container, e.clientY);
         if (!draggingEl) return;
         if (afterElement == null) {
-          container.insertBefore(draggingEl, container.lastElementChild); // before add-button
+          container.insertBefore(draggingEl, container.lastElementChild);
         } else {
           container.insertBefore(draggingEl, afterElement);
         }
@@ -872,20 +853,55 @@
       row.setAttribute("draggable", "true");
       row.setAttribute("data-name", name);
 
+      const isCardio = groupName === "有氧";
+
+      let inputsHTML;
+      if (isCardio) {
+        inputsHTML = `
+          <div class="sub-inputs">
+            <input class="weight-input" type="number" placeholder="強度 / 阻力">
+            <input class="reps-input" type="number" placeholder="時間 / 次數">
+            <input class="sets-input" type="number" placeholder="組 / 間歇">
+          </div>
+        `;
+      } else {
+        inputsHTML = `
+          <div class="sub-inputs">
+            <input class="weight-input" type="number" placeholder="槓片 kg">
+            <input class="reps-input" type="number" placeholder="次數">
+            <input class="sets-input" type="number" placeholder="組數">
+          </div>
+        `;
+      }
+
       row.innerHTML = `
         <div class="sub-handle">☰</div>
         <div class="sub-main">
           <div class="sub-title">${name}</div>
           <div class="sub-muscle">${muscle || ""}</div>
         </div>
-        <div class="sub-inputs">
-          <input class="weight-input" type="number" placeholder="重量 kg">
-          <input class="reps-input" type="number" placeholder="次數">
-          <input class="sets-input" type="number" placeholder="組數">
-        </div>
+        ${inputsHTML}
       `;
 
       list.insertBefore(row, addBtn);
+    }
+
+    // ===== 載入「上一次訓練」 =====
+    function loadLatestSession() {
+      const all = loadAll();
+      const dateTextEl = document.getElementById("dateText");
+
+      if (!all.length) {
+        clearAllInputs();
+        dateTextEl.textContent = "尚未有訓練紀錄";
+        setStatus("尚未有訓練紀錄，先填寫一次吧。", "warn");
+        return;
+      }
+
+      all.sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+      const last = all[all.length - 1];
+      dateTextEl.textContent = "上次訓練：" + last.date;
+      loadDataForDate(last.date);
     }
 
     // ===== 初始化 =====
@@ -895,27 +911,9 @@
       const savedTheme = localStorage.getItem("workoutTheme") || "light";
       themeSelector.value = savedTheme;
       applyTheme(savedTheme);
-
       themeSelector.addEventListener("change", () => {
         applyTheme(themeSelector.value);
       });
-
-      // 日期
-      document
-        .getElementById("prevDayBtn")
-        .addEventListener("click", () => {
-          currentDate.setDate(currentDate.getDate() - 1);
-          updateDateDisplay();
-        });
-
-      document
-        .getElementById("nextDayBtn")
-        .addEventListener("click", () => {
-          currentDate.setDate(currentDate.getDate() + 1);
-          updateDateDisplay();
-        });
-
-      updateDateDisplay();
 
       // 展開 / 收合群組
       document.querySelectorAll(".group-header").forEach((header) => {
@@ -942,9 +940,13 @@
         });
       });
 
-      // 儲存
+      // 一進來就載入「上一次訓練」
+      loadLatestSession();
+      rebuildHistoryExerciseOptions();
+
+      // 儲存（永遠記成「今天」這一次訓練）
       document.getElementById("saveBtn").addEventListener("click", () => {
-        const dateStr = formatDate(currentDate);
+        const dateStr = formatDate(new Date());
         const records = collectRecordsFromUI();
         const all = loadAll();
         const idx = all.findIndex((d) => d.date === dateStr);
@@ -965,6 +967,8 @@
           setStatus("已儲存 " + dateStr + " 的訓練紀錄。", "ok");
         }
 
+        document.getElementById("dateText").textContent =
+          "上次訓練：" + dateStr;
         rebuildHistoryExerciseOptions();
       });
 
@@ -980,8 +984,6 @@
           }
           showHistoryForExercise(name);
         });
-
-      rebuildHistoryExerciseOptions();
     });
   </script>
 </body>

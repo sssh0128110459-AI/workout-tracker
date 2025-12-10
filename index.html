@@ -102,7 +102,7 @@
       margin-bottom: 10px;
       font-size: 16px;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
       gap: 8px;
     }
@@ -112,17 +112,24 @@
       color: var(--subtext);
     }
 
-    .date-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      flex-wrap: wrap;
+    .section-sub-right {
+      text-align: right;
+      font-size: 11px;
+      color: var(--subtext);
     }
 
-    .date-text {
-      font-size: 15px;
-      font-weight: 600;
+    .status-text {
+      font-size: 12px;
+      color: var(--subtext);
+      margin-top: 6px;
+    }
+
+    .status-ok {
+      color: #3fbf6b;
+    }
+
+    .status-warn {
+      color: #f0a14a;
     }
 
     .btn {
@@ -180,9 +187,13 @@
       transition: transform 0.15s ease;
     }
 
+    .group.open .group-toggle {
+      transform: rotate(90deg);
+    }
+
     .sub-list {
       display: none;
-      padding: 6px 10px 8px;
+      padding: 4px 10px 8px;
       border-top: 1px solid var(--border);
     }
 
@@ -190,10 +201,31 @@
       display: block;
     }
 
-    .group.open .group-toggle {
-      transform: rotate(90deg);
+    /* 小標題列：動作 / 槓片 / 次數 / 組數 */
+    .sub-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 4px 0 6px;
+      border-bottom: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--subtext);
     }
 
+    .sub-header-main {
+      flex: 1.5;
+    }
+
+    .sub-header-inputs {
+      flex: 1.8;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 4px;
+      text-align: center;
+    }
+
+    /* 每列動作 */
     .sub-row {
       display: flex;
       align-items: center;
@@ -209,7 +241,7 @@
     }
 
     .sub-main {
-      flex: 1.2;
+      flex: 1.5;
       min-width: 110px;
     }
 
@@ -224,7 +256,7 @@
     }
 
     .sub-inputs {
-      flex: 1.4;
+      flex: 1.8;
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 4px;
@@ -251,6 +283,26 @@
       opacity: 0.6;
       padding: 0 4px;
       user-select: none;
+    }
+
+    .sub-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .icon-btn {
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      font-size: 11px;
+      padding: 2px 4px;
+      cursor: pointer;
+      color: var(--subtext);
+    }
+
+    .icon-btn:hover {
+      background: var(--accent-soft);
     }
 
     .add-ex-btn {
@@ -312,26 +364,18 @@
       color: var(--subtext);
     }
 
-    .status-text {
-      font-size: 12px;
-      color: var(--subtext);
-      margin-top: 6px;
-    }
-
-    .status-ok {
-      color: #3fbf6b;
-    }
-
-    .status-warn {
-      color: #f0a14a;
-    }
-
     @media (max-width: 600px) {
+      .sub-header-row {
+        font-size: 10px;
+      }
       .sub-inputs {
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
       .group-header {
         padding-inline: 8px;
+      }
+      .sub-actions {
+        flex-direction: row;
       }
     }
   </style>
@@ -347,25 +391,14 @@
   </header>
 
   <main>
-    <!-- 上次訓練 -->
-    <section class="card">
-      <div class="section-title">
-        <span>📅 上次訓練</span>
-      </div>
-      <div class="date-row">
-        <div class="date-text" id="dateText">尚未有訓練紀錄</div>
-      </div>
-      <div class="section-sub">
-        打開這個頁面時，會自動載入你<b>上一次儲存的訓練內容</b>。<br>
-        你今天練完按「儲存」後，這一筆就會變成下一次打開時看到的「上次訓練」。
-      </div>
-    </section>
-
-    <!-- 訓練項目 -->
+    <!-- 訓練項目（主介面） -->
     <section class="card">
       <div class="section-title">
         <span>💪 訓練項目</span>
-        <span class="section-sub">展開後可直接填槓片 kg / 次數 / 組數；拖曳可調整順序。</span>
+        <div class="section-sub-right">
+          <div>動作 / 槓片 kg / 次數 下 / 組數 組</div>
+          <div id="currentDateLabel"></div>
+        </div>
       </div>
 
       <div id="groupsContainer">
@@ -376,6 +409,16 @@
             <div class="group-toggle">▶</div>
           </div>
           <div class="sub-list">
+            <div class="sub-header-row">
+              <div class="sub-header-main">動作</div>
+              <div class="sub-header-inputs">
+                <span>槓片 (kg)</span>
+                <span>次數 (下)</span>
+                <span>組數 (組)</span>
+              </div>
+              <div style="width:40px;text-align:center;">編輯</div>
+            </div>
+
             <div class="sub-row" draggable="true" data-name="平板啞鈴臥推">
               <div class="sub-handle">☰</div>
               <div class="sub-main">
@@ -386,6 +429,10 @@
                 <input class="weight-input" type="number" placeholder="槓片 kg">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
+              </div>
+              <div class="sub-actions">
+                <button type="button" class="icon-btn edit-ex-btn">✎</button>
+                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -400,6 +447,10 @@
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
+              <div class="sub-actions">
+                <button type="button" class="icon-btn edit-ex-btn">✎</button>
+                <button type="button" class="icon-btn delete-ex-btn">✕</button>
+              </div>
             </div>
 
             <div class="sub-row" draggable="true" data-name="啞鈴飛鳥">
@@ -412,6 +463,10 @@
                 <input class="weight-input" type="number" placeholder="槓片 kg">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
+              </div>
+              <div class="sub-actions">
+                <button type="button" class="icon-btn edit-ex-btn">✎</button>
+                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -426,6 +481,16 @@
             <div class="group-toggle">▶</div>
           </div>
           <div class="sub-list">
+            <div class="sub-header-row">
+              <div class="sub-header-main">動作</div>
+              <div class="sub-header-inputs">
+                <span>槓片 (kg)</span>
+                <span>次數 (下)</span>
+                <span>組數 (組)</span>
+              </div>
+              <div style="width:40px;text-align:center;">編輯</div>
+            </div>
+
             <div class="sub-row" draggable="true" data-name="引體向上">
               <div class="sub-handle">☰</div>
               <div class="sub-main">
@@ -433,9 +498,13 @@
                 <div class="sub-muscle">背闊肌 / 肱二頭肌</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="槓片 / 負重 kg">
+                <input class="weight-input" type="number" placeholder="槓片 / 負重">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
+              </div>
+              <div class="sub-actions">
+                <button type="button" class="icon-btn edit-ex-btn">✎</button>
+                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -450,6 +519,10 @@
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
+              <div class="sub-actions">
+                <button type="button" class="icon-btn edit-ex-btn">✎</button>
+                <button type="button" class="icon-btn delete-ex-btn">✕</button>
+              </div>
             </div>
 
             <div class="sub-row" draggable="true" data-name="坐姿划船">
@@ -462,6 +535,10 @@
                 <input class="weight-input" type="number" placeholder="槓片 kg">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
+              </div>
+              <div class="sub-actions">
+                <button type="button" class="icon-btn edit-ex-btn">✎</button>
+                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -476,6 +553,16 @@
             <div class="group-toggle">▶</div>
           </div>
           <div class="sub-list">
+            <div class="sub-header-row">
+              <div class="sub-header-main">動作</div>
+              <div class="sub-header-inputs">
+                <span>槓片 (kg)</span>
+                <span>次數 (下)</span>
+                <span>組數 (組)</span>
+              </div>
+              <div style="width:40px;text-align:center;">編輯</div>
+            </div>
+
             <div class="sub-row" draggable="true" data-name="深蹲">
               <div class="sub-handle">☰</div>
               <div class="sub-main">
@@ -486,6 +573,10 @@
                 <input class="weight-input" type="number" placeholder="槓片 kg">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
+              </div>
+              <div class="sub-actions">
+                <button type="button" class="icon-btn edit-ex-btn">✎</button>
+                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -500,6 +591,10 @@
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
+              <div class="sub-actions">
+                <button type="button" class="icon-btn edit-ex-btn">✎</button>
+                <button type="button" class="icon-btn delete-ex-btn">✕</button>
+              </div>
             </div>
 
             <div class="sub-row" draggable="true" data-name="羅馬尼亞硬舉">
@@ -512,6 +607,10 @@
                 <input class="weight-input" type="number" placeholder="槓片 kg">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
+              </div>
+              <div class="sub-actions">
+                <button type="button" class="icon-btn edit-ex-btn">✎</button>
+                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -526,6 +625,16 @@
             <div class="group-toggle">▶</div>
           </div>
           <div class="sub-list">
+            <div class="sub-header-row">
+              <div class="sub-header-main">動作</div>
+              <div class="sub-header-inputs">
+                <span>槓片 (kg)</span>
+                <span>次數 (下)</span>
+                <span>組數 (組)</span>
+              </div>
+              <div style="width:40px;text-align:center;">編輯</div>
+            </div>
+
             <div class="sub-row" draggable="true" data-name="啞鈴肩推">
               <div class="sub-handle">☰</div>
               <div class="sub-main">
@@ -536,6 +645,10 @@
                 <input class="weight-input" type="number" placeholder="槓片 kg">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
+              </div>
+              <div class="sub-actions">
+                <button type="button" class="icon-btn edit-ex-btn">✎</button>
+                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -550,6 +663,10 @@
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
+              <div class="sub-actions">
+                <button type="button" class="icon-btn edit-ex-btn">✎</button>
+                <button type="button" class="icon-btn delete-ex-btn">✕</button>
+              </div>
             </div>
 
             <button class="btn add-ex-btn" data-group="肩">＋ 新增肩部動作</button>
@@ -563,6 +680,16 @@
             <div class="group-toggle">▶</div>
           </div>
           <div class="sub-list">
+            <div class="sub-header-row">
+              <div class="sub-header-main">動作</div>
+              <div class="sub-header-inputs">
+                <span>強度 / 阻力</span>
+                <span>時間 / 次數</span>
+                <span>組 / 間歇</span>
+              </div>
+              <div style="width:40px;text-align:center;">編輯</div>
+            </div>
+
             <div class="sub-row" draggable="true" data-name="跑步機">
               <div class="sub-handle">☰</div>
               <div class="sub-main">
@@ -573,6 +700,10 @@
                 <input class="weight-input" type="number" placeholder="速度 / 斜度">
                 <input class="reps-input" type="number" placeholder="時間 分">
                 <input class="sets-input" type="number" placeholder="組 / 間歇">
+              </div>
+              <div class="sub-actions">
+                <button type="button" class="icon-btn edit-ex-btn">✎</button>
+                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -587,6 +718,10 @@
                 <input class="reps-input" type="number" placeholder="時間 分">
                 <input class="sets-input" type="number" placeholder="組 / 間歇">
               </div>
+              <div class="sub-actions">
+                <button type="button" class="icon-btn edit-ex-btn">✎</button>
+                <button type="button" class="icon-btn delete-ex-btn">✕</button>
+              </div>
             </div>
 
             <div class="sub-row" draggable="true" data-name="跳繩">
@@ -599,6 +734,10 @@
                 <input class="weight-input" type="number" placeholder="節奏 / 負重">
                 <input class="reps-input" type="number" placeholder="次數 / 秒">
                 <input class="sets-input" type="number" placeholder="組數">
+              </div>
+              <div class="sub-actions">
+                <button type="button" class="icon-btn edit-ex-btn">✎</button>
+                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -798,13 +937,17 @@
       localStorage.setItem("workoutTheme", theme);
     }
 
-    // ===== 拖曳排序 =====
+    // ===== 拖曳排序（只用把手拖） =====
     function enableDrag(container) {
       let draggingEl = null;
 
       container.addEventListener("dragstart", (e) => {
-        const row = e.target.closest(".sub-row");
-        if (!row) return;
+        const handle = e.target.closest(".sub-handle");
+        if (!handle) {
+          e.preventDefault();
+          return;
+        }
+        const row = handle.closest(".sub-row");
         draggingEl = row;
         row.classList.add("dragging");
       });
@@ -819,8 +962,13 @@
         e.preventDefault();
         const afterElement = getDragAfterElement(container, e.clientY);
         if (!draggingEl) return;
-        if (afterElement == null) {
-          container.insertBefore(draggingEl, container.lastElementChild);
+
+        // 避開 header / add button，只在真正的 sub-row 間排序
+        const rows = [...container.querySelectorAll(".sub-row, .add-ex-btn")];
+        const addBtn = container.querySelector(".add-ex-btn");
+
+        if (afterElement == null || afterElement === addBtn) {
+          container.insertBefore(draggingEl, addBtn);
         } else {
           container.insertBefore(draggingEl, afterElement);
         }
@@ -843,7 +991,7 @@
       return closest.element;
     }
 
-    // ===== 新增動作 =====
+    // ===== 新增動作（包含編輯 / 刪除按鈕） =====
     function addExerciseRow(groupEl, groupName, name, muscle) {
       const list = groupEl.querySelector(".sub-list");
       const addBtn = list.querySelector(".add-ex-btn");
@@ -881,26 +1029,30 @@
           <div class="sub-muscle">${muscle || ""}</div>
         </div>
         ${inputsHTML}
+        <div class="sub-actions">
+          <button type="button" class="icon-btn edit-ex-btn">✎</button>
+          <button type="button" class="icon-btn delete-ex-btn">✕</button>
+        </div>
       `;
 
       list.insertBefore(row, addBtn);
     }
 
-    // ===== 載入「上一次訓練」 =====
+    // ===== 載入「最近一次訓練」 =====
     function loadLatestSession() {
       const all = loadAll();
-      const dateTextEl = document.getElementById("dateText");
+      const labelEl = document.getElementById("currentDateLabel");
 
       if (!all.length) {
         clearAllInputs();
-        dateTextEl.textContent = "尚未有訓練紀錄";
+        labelEl.textContent = "目前顯示：尚未有任何訓練紀錄";
         setStatus("尚未有訓練紀錄，先填寫一次吧。", "warn");
         return;
       }
 
       all.sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
       const last = all[all.length - 1];
-      dateTextEl.textContent = "上次訓練：" + last.date;
+      labelEl.textContent = "目前顯示：" + last.date + "（最近一次）";
       loadDataForDate(last.date);
     }
 
@@ -940,7 +1092,38 @@
         });
       });
 
-      // 一進來就載入「上一次訓練」
+      // 編輯 & 刪除（事件委派）
+      document.addEventListener("click", (e) => {
+        const editBtn = e.target.closest(".edit-ex-btn");
+        const delBtn = e.target.closest(".delete-ex-btn");
+
+        if (editBtn) {
+          const row = editBtn.closest(".sub-row");
+          const titleEl = row.querySelector(".sub-title");
+          const muscleEl = row.querySelector(".sub-muscle");
+          const oldName = titleEl.textContent.trim();
+          const oldMuscle = muscleEl.textContent.trim();
+
+          const newName = prompt("編輯動作名稱：", oldName);
+          if (!newName) return;
+
+          const newMuscle = prompt("編輯主要肌群（可留白）：", oldMuscle) || "";
+
+          titleEl.textContent = newName;
+          muscleEl.textContent = newMuscle;
+          row.setAttribute("data-name", newName);
+        }
+
+        if (delBtn) {
+          const row = delBtn.closest(".sub-row");
+          const title = row.querySelector(".sub-title").textContent.trim();
+          if (confirm(`要刪除動作「${title}」嗎？`)) {
+            row.remove();
+          }
+        }
+      });
+
+      // 一進來就載入最近一次訓練
       loadLatestSession();
       rebuildHistoryExerciseOptions();
 
@@ -967,8 +1150,8 @@
           setStatus("已儲存 " + dateStr + " 的訓練紀錄。", "ok");
         }
 
-        document.getElementById("dateText").textContent =
-          "上次訓練：" + dateStr;
+        document.getElementById("currentDateLabel").textContent =
+          "目前顯示：" + dateStr + "（最近一次）";
         rebuildHistoryExerciseOptions();
       });
 

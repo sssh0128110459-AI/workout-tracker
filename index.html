@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <title>健身紀錄</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    /* =========================
+       THEME VARIABLES
+    ========================== */
+    :root {
+      --bg: #f7f4ec;
+      --card: #ffffff;
+      --text: #2b2b2b;
+      --subtext: #5f5f5f;
+      --accent: #c5a56a;
+      --accent-soft: #efe3c7;
+      --border: #e0dcd2;
+      --input-bg: #f3eee3;
+    }
+
+    /* 深色主題 */
+    body.dark {
+      --bg: #111111;
+      --card: #1f1f1f;
+      --text: #f5f5f5;
+      --subtext: #b3b3b3;
+      --accent: #d4a15a;
+      --accent-soft: #2b2216;
+      --border: #3a3a3a;
+      --input-bg: #161616;
+    }
+
+    /* 冰島苔原：黑綠為主 */
+    body.iceland {
+      --bg: #050806;         /* 接近黑的苔原夜色 */
+      --card: #101a12;       /* 深墨綠卡片 */
+      --text: #e5f3e9;       /* 帶綠的暖白字 */
+      --subtext: #9bb8a6;    /* 淡綠灰副文字 */
+      --accent: #2faa6a;     /* 冰冷鮮綠做點綴 */
+      --accent-soft: #12251a;
+      --border: #35533f;
+      --input-bg: #0d1510;
+    }
+
+    /* =========================
+       BASE
+    ========================== */
+    * {
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
+        sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    header {
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .theme-select {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 16px 24px;
+    }
+
+    .card {
+      background: var(--card);
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .section-title {
+      font-weight: 700;
+      margin-bottom: 10px;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .section-sub {
+      font-size: 12px;
+      color: var(--subtext);
+    }
+
+    /* 日期列 */
+    .date-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .date-text {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .date-nav {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn {
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      font-size: 13px;
+      cursor: pointer;
+      background: var(--card);
+      color: var(--text);
+    }
+
+    .btn:hover {
+      background: var(--accent-soft);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: transparent;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.05);
+    }
+
+    /* 訓練項目群組 */
+    .group {
+      margin-bottom: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.02),
+        transparent
+      );
+    }
+
+    .group-header {
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .group-name {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .group-toggle {
+      font-size: 18px;
+      opacity: 0.7;
+    }
+
+    .sub-list {
+      display: none;
+      padding: 6px 10px 8px;
+      border-top: 1px solid var(--border);
+    }
+
+    .group.open .sub-list {
+      display: block;
+    }
+
+    .group.open .group-toggle {
+      transform: rotate(90deg);
+    }
+
+    .sub-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 6px 0;
+      border-bottom: 1px dashed var(--border);
+      cursor: grab;
+    }
+
+    .sub-row:last-child {
+      border-bottom: none;
+    }
+
+    .sub-main {
+      flex: 1.2;
+      min-width: 110px;
+    }
+
+    .sub-title {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .sub-muscle {
+      font-size: 11px;
+      color: var(--subtext);
+    }
+
+    .sub-inputs {
+      flex: 1.4;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 4px;
+    }
+
+    .sub-inputs input {
+      width: 100%;
+      padding: 4px 6px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--input-bg);
+      color: var(--text);
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .sub-inputs input::placeholder {
+      font-size: 11px;
+      color: var(--subtext);
+    }
+
+    .sub-handle {
+      font-size: 14px;
+      opacity: 0.6;
+      padding: 0 4px;
+      user-select: none;
+    }
+
+    .add-ex-btn {
+      margin-top: 6px;
+      font-size: 11px;
+      padding: 4px 10px;
+    }
+
+    .dragging {
+      opacity: 0.6;
+      border-style: dashed;
+    }
+
+    /* 歷史查詢 */
+    .history-select-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    select {
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .history-list {
+      font-size: 12px;
+      max-height: 220px;
+      overflow-y: auto;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      padding: 6px 8px;
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .history-item:last-child {
+      border-bottom: none;
+    }
+
+    .history-date {
+      font-weight: 500;
+    }
+
+    .history-meta {
+      text-align: right;
+      color: var(--subtext);
+    }
+
+    .status-text {
+      font-size: 12px;
+      color: var(--subtext);
+      margin-top: 6px;
+    }
+
+    .status-ok {
+      color: #3fbf6b;
+    }
+
+    .status-warn {
+      color: #f0a14a;
+    }
+
+    @media (max-width: 600px) {
+      .sub-inputs {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+      .group-header {
+        padding-inline: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>健身紀錄</h1>
+    <select id="themeSelector" class="theme-select">
+      <option value="light">🌞 淺色</option>
+      <option value="dark">🌙 深色</option>
+      <option value="iceland">🍃 冰島苔原</option>
+    </select>
+  </header>
+
+  <main>
+    <!-- 日期：自動今天 + 前一天 / 後一天 -->
+    <section class="card">
+      <div class="section-title">
+        <span>📅 訓練日期</span>
+      </div>
+      <div class="date-row">
+        <div class="date-text" id="dateText"></div>
+        <div class="date-nav">
+          <button class="btn" id="prevDayBtn">← 前一天</button>
+          <button class="btn" id="nextDayBtn">後一天 →</button>
+        </div>
+      </div>
+      <div class="section-sub">日期會自動抓今天，你只要切換查看前後的訓練即可。</div>
+    </section>
+
+    <!-- 訓練項目 -->
+    <section class="card">
+      <div class="section-title">
+        <span>💪 訓練項目</span>
+        <span class="section-sub">展開後可直接填重量 / 次數 / 組數；拖曳可調整順序。</span>
+      </div>
+
+      <div id="groupsContainer">
+        <!-- 胸 -->
+        <div class="group" data-group="胸">
+          <div class="group-header">
+            <div class="group-name">胸部</div>
+            <div class="group-toggle">▶</div>
+          </div>
+          <div class="sub-list">
+            <div class="sub-row" draggable="true" data-name="平板啞鈴臥推">
+              <div class="sub-handle">☰</div>
+              <div class="sub-main">
+                <div class="sub-title">平板啞鈴臥推</div>
+                <div class="sub-muscle">胸大肌 / 肱三頭肌</div>
+              </div>
+              <div class="sub-inputs">
+                <input class="weight-input" type="number" placeholder="重量 kg">
+                <input class="reps-input" type="number" placeholder="次數">
+                <input class="sets-input" type="number" placeholder="組數">
+              </div>
+            </div>
+
+            <div class="sub-row" draggable="true" data-name="上斜啞鈴臥推">
+              <div class="sub-handle">☰</div>
+              <div class="sub-main">
+                <div class="sub-title">上斜啞鈴臥推</div>
+                <div class="sub-muscle">上胸 / 肱三頭肌</div>
+              </div>
+              <div class="sub-inputs">
+                <input class="weight-input" type="number" placeholder="重量 kg">
+                <input class="reps-input" type="number" placeholder="次數">
+                <input class="sets-input" type="number" placeholder="組數">
+              </div>
+            </div>
+
+            <div class="sub-row" draggable="true" data-name="啞鈴飛鳥">
+              <div class="sub-handle">☰</div>
+              <div class="sub-main">
+                <div class="sub-title">啞鈴飛鳥</div>
+                <div class="sub-muscle">胸大肌伸展</div>
+              </div>
+              <div class="sub-inputs">
+                <input class="weight-input" type="number" placeholder="重量 kg">
+                <input class="reps-input" type="number" placeholder="次數">
+                <input class="sets-input" type="number" placeholder="組數">
+              </div>
+            </div>
+
+            <button class="btn add-ex-btn" data-group="胸">＋ 新增胸部動作</button>
+          </div>
+        </div>
+
+        <!-- 背 -->
+        <div class="group" data-group="背">
+          <div class="group-header">
+            <div class="group-name">背部</div>
+            <div class="group-toggle">▶</div>
+          </div>
+          <div class="sub-list">
+            <div class="sub-row" draggable="true" data-name="引體向上">
+              <div class="sub-handle">☰</div>
+              <div class="sub-main">
+                <div class="sub-title">引體向上</div>
+                <div class="sub-muscle">背闊肌 / 肱二頭肌</div>
+              </div>
+              <div class="sub-inputs">
+                <input class="weight-input" type="number" placeholder="負重 kg">
+                <input class="reps-input" type="number" placeholder="次數">
+                <input class="sets-input" type="number" placeholder="組數">
+              </div>
+            </div>
+
+            <div class="sub-row" draggable="true" data-name="高位下拉">
+              <div class="sub-handle">☰</div>
+              <div class="sub-main">
+                <div class="sub-title">高位下拉</div>
+                <div class="sub-muscle">背闊肌</div>
+              </div>
+              <div class="sub-inputs">
+                <input class="weight-input" type="number" placeholder="重量 kg">
+                <input class="reps-input" type="number" placeholder="次數">
+                <input class="sets-input" type="number" placeholder="組數">
+              </div>
+            </div>
+
+            <div class="sub-row" draggable="true" data-name="坐姿划船">
+              <div class="sub-handle">☰</div>
+              <div class="sub-main">
+                <div class="sub-title">坐姿划船</div>
+                <div class="sub-muscle">菱形肌 / 斜方肌 / 二頭</div>
+              </div>
+              <div class="sub-inputs">
+                <input class="weight-input" type="number" placeholder="重量 kg">
+                <input class="reps-input" type="number" placeholder="次數">
+                <input class="sets-input" type="number" placeholder="組數">
+              </div>
+            </div>
+
+            <button class="btn add-ex-btn" data-group="背">＋ 新增背部動作</button>
+          </div>
+        </div>
+
+        <!-- 腿 -->
+        <div class="group" data-group="腿">
+          <div class="group-header">
+            <div class="group-name">腿部</div>
+            <div class="group-toggle">▶</div>
+          </div>
+          <div class="sub-list">
+            <div class="sub-row" draggable="true" data-name="深蹲">
+              <div class="sub-handle">☰</div>
+              <div class="sub-main">
+                <div class="sub-title">深蹲</div>
+                <div class="sub-muscle">股四頭 / 臀</div>
+              </div>
+              <div class="sub-inputs">
+                <input class="weight-input" type="number" placeholder="重量 kg">
+                <input class="reps-input" type="number" placeholder="次數">
+                <input class="sets-input" type="number" placeholder="組數">
+              </div>
+            </div>
+
+            <div class="sub-row" draggable="true" data-name="腿推機">
+              <div class="sub-handle">☰</div>
+              <div class="sub-main">
+                <div class="sub-title">腿推機</div>
+                <div class="sub-muscle">股四頭 / 臀</div>
+              </div>
+              <div class="sub-inputs">
+                <input class="weight-input" type="number" placeholder="重量 kg">
+                <input class="reps-input" type="number" placeholder="次數">
+                <input class="sets-input" type="number" placeholder="組數">
+              </div>
+            </div>
+
+            <div class="sub-row" draggable="true" data-name="羅馬尼亞硬舉">
+              <div class="sub-handle">☰</div>
+              <div class="sub-main">
+                <div class="sub-title">羅馬尼亞硬舉</div>
+                <div class="sub-muscle">腿後肌 / 臀</div>
+              </div>
+              <div class="sub-inputs">
+                <input class="weight-input" type="number" placeholder="重量 kg">
+                <input class="reps-input" type="number" placeholder="次數">
+                <input class="sets-input" type="number" placeholder="組數">
+              </div>
+            </div>
+
+            <button class="btn add-ex-btn" data-group="腿">＋ 新增腿部動作</button>
+          </div>
+        </div>
+
+        <!-- 肩 -->
+        <div class="group" data-group="肩">
+          <div class="group-header">
+            <div class="group-name">肩部</div>
+            <div class="group-toggle">▶</div>
+          </div>
+          <div class="sub-list">
+            <div class="sub-row" draggable="true" data-name="啞鈴肩推">
+              <div class="sub-handle">☰</div>
+              <div class="sub-main">
+                <div class="sub-title">啞鈴肩推</div>
+                <div class="sub-muscle">三角肌前中束</div>
+              </div>
+              <div class="sub-inputs">
+                <input class="weight-input" type="number" placeholder="重量 kg">
+                <input class="reps-input" type="number" placeholder="次數">
+                <input class="sets-input" type="number" placeholder="組數">
+              </div>
+            </div>
+
+            <div class="sub-row" draggable="true" data-name="側平舉">
+              <div class="sub-handle">☰</div>
+              <div class="sub-main">
+                <div class="sub-title">側平舉</div>
+                <div class="sub-muscle">三角肌中束</div>
+              </div>
+              <div class="sub-inputs">
+                <input class="weight-input" type="number" placeholder="重量 kg">
+                <input class="reps-input" type="number" placeholder="次數">
+                <input class="sets-input" type="number" placeholder="組數">
+              </div>
+            </div>
+
+            <button class="btn add-ex-btn" data-group="肩">＋ 新增肩部動作</button>
+          </div>
+        </div>
+
+        <!-- 有氧 -->
+        <div class="group" data-group="有氧">
+          <div class="group-header">
+            <div class="group-name">有氧</div>
+            <div class="group-toggle">▶</div>
+          </div>
+          <div class="sub-list">
+            <div class="sub-row" draggable="true" data-name="跑步機">
+              <div class="sub-handle">☰</div>
+              <div class="sub-main">
+                <div class="sub-title">跑步機</div>
+                <div class="sub-muscle">心肺 / 下肢</div>
+              </div>
+              <div class="sub-inputs">
+                <input class="weight-input" type="number" placeholder="速度 / 斜度">
+                <input class="reps-input" type="number" placeholder="時間 分">
+                <input class="sets-input" type="number" placeholder="組 / 間歇">
+              </div>
+            </div>
+
+            <div class="sub-row" draggable="true" data-name="飛輪車">
+              <div class="sub-handle">☰</div>
+              <div class="sub-main">
+                <div class="sub-title">飛輪車</div>
+                <div class="sub-muscle">腿部 / 心肺</div>
+              </div>
+              <div class="sub-inputs">
+                <input class="weight-input" type="number" placeholder="阻力等級">
+                <input class="reps-input" type="number" placeholder="時間 分">
+                <input class="sets-input" type="number" placeholder="組 / 間歇">
+              </div>
+            </div>
+
+            <div class="sub-row" draggable="true" data-name="跳繩">
+              <div class="sub-handle">☰</div>
+              <div class="sub-main">
+                <div class="sub-title">跳繩</div>
+                <div class="sub-muscle">小腿 / 心肺</div>
+              </div>
+              <div class="sub-inputs">
+                <input class="weight-input" type="number" placeholder="節奏 / 負重">
+                <input class="reps-input" type="number" placeholder="次數 / 秒">
+                <input class="sets-input" type="number" placeholder="組數">
+              </div>
+            </div>
+
+            <button class="btn add-ex-btn" data-group="有氧">＋ 新增有氧動作</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-primary" id="saveBtn" style="width:100%;margin-top:10px;">
+        💾 儲存今天的訓練
+      </button>
+      <div id="saveStatus" class="status-text"></div>
+    </section>
+
+    <!-- 歷史查詢 -->
+    <section class="card">
+      <div class="section-title">
+        <span>📊 歷史查詢</span>
+      </div>
+      <div class="history-select-row">
+        <span class="section-sub">選一個動作，查看不同日期的重量 / 次數 / 組數：</span>
+        <select id="historyExerciseSelect">
+          <option value="">請選擇動作</option>
+        </select>
+      </div>
+      <div id="historyList" class="history-list">
+        <div class="section-sub">目前尚未選擇動作或尚無紀錄。</div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "trainingV3";
+
+    // ===== 日期處理 =====
+    let currentDate = new Date();
+
+    function formatDate(d) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
+    }
+
+    function formatDisplay(d) {
+      const y = d.getFullYear();
+      const m = d.getMonth() + 1;
+      const day = d.getDate();
+      return `${y} / ${m} / ${day}`;
+    }
+
+    function updateDateDisplay() {
+      document.getElementById("dateText").textContent = formatDisplay(currentDate);
+      loadDataForDate(formatDate(currentDate));
+    }
+
+    // ===== 儲存 / 讀取 =====
+    function loadAll() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        console.error("讀取失敗", e);
+        return [];
+      }
+    }
+
+    function saveAll(data) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function loadDataForDate(dateStr) {
+      const all = loadAll();
+      const found = all.find((d) => d.date === dateStr);
+
+      // 清空所有輸入
+      document.querySelectorAll(".sub-row").forEach((row) => {
+        row.querySelector(".weight-input").value = "";
+        row.querySelector(".reps-input").value = "";
+        row.querySelector(".sets-input").value = "";
+      });
+
+      if (found && Array.isArray(found.records)) {
+        found.records.forEach((r) => {
+          const selector = `.group[data-group="${r.group}"] .sub-row[data-name="${r.name}"]`;
+          const row = document.querySelector(selector);
+          if (row) {
+            row.querySelector(".weight-input").value = r.weight ?? "";
+            row.querySelector(".reps-input").value = r.reps ?? "";
+            row.querySelector(".sets-input").value = r.sets ?? "";
+          }
+        });
+        setStatus("已載入 " + dateStr + " 的紀錄", "ok");
+      } else {
+        setStatus("此日期尚無紀錄，可以開始記錄。", "warn");
+      }
+    }
+
+    function setStatus(text, type) {
+      const el = document.getElementById("saveStatus");
+      el.textContent = text;
+      el.classList.remove("status-ok", "status-warn");
+      if (type === "ok") el.classList.add("status-ok");
+      if (type === "warn") el.classList.add("status-warn");
+    }
+
+    function collectRecordsFromUI() {
+      const records = [];
+      document.querySelectorAll(".group").forEach((group) => {
+        const groupName = group.getAttribute("data-group");
+        group.querySelectorAll(".sub-row").forEach((row) => {
+          const name = row.getAttribute("data-name");
+          const weight = row.querySelector(".weight-input").value;
+          const reps = row.querySelector(".reps-input").value;
+          const sets = row.querySelector(".sets-input").value;
+
+          if (weight || reps || sets) {
+            records.push({
+              group: groupName,
+              name,
+              weight: weight ? Number(weight) : null,
+              reps: reps ? Number(reps) : null,
+              sets: sets ? Number(sets) : null,
+            });
+          }
+        });
+      });
+      return records;
+    }
+
+    // ===== 歷史查詢 =====
+    function rebuildHistoryExerciseOptions() {
+      const all = loadAll();
+      const set = new Set();
+
+      // 把目前 UI 的動作名也加進來（即使還沒紀錄過）
+      document.querySelectorAll(".sub-row").forEach((row) => {
+        const name = row.getAttribute("data-name");
+        if (name) set.add(name);
+      });
+
+      all.forEach((day) => {
+        if (!Array.isArray(day.records)) return;
+        day.records.forEach((r) => {
+          if (r.name) set.add(r.name);
+        });
+      });
+
+      const select = document.getElementById("historyExerciseSelect");
+      const current = select.value;
+      select.innerHTML = `<option value="">請選擇動作</option>`;
+      Array.from(set)
+        .sort()
+        .forEach((name) => {
+          const opt = document.createElement("option");
+          opt.value = name;
+          opt.textContent = name;
+          select.appendChild(opt);
+        });
+
+      if (current && set.has(current)) {
+        select.value = current;
+        showHistoryForExercise(current);
+      } else {
+        document.getElementById("historyList").innerHTML =
+          `<div class="section-sub">目前尚未選擇動作或尚無紀錄。</div>`;
+      }
+    }
+
+    function showHistoryForExercise(name) {
+      const all = loadAll().slice().sort((a, b) =>
+        a.date < b.date ? -1 : a.date > b.date ? 1 : 0
+      );
+      const container = document.getElementById("historyList");
+      container.innerHTML = "";
+
+      const filtered = [];
+      all.forEach((day) => {
+        const match = day.records?.find((r) => r.name === name);
+        if (match) {
+          filtered.push({ date: day.date, ...match });
+        }
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML =
+          `<div class="section-sub">這個動作目前沒有紀錄。</div>`;
+        return;
+      }
+
+      filtered.forEach((item) => {
+        const div = document.createElement("div");
+        div.className = "history-item";
+        div.innerHTML = `
+          <div class="history-date">${item.date}</div>
+          <div class="history-meta">
+            <div>${item.weight ?? "-"} kg × ${item.reps ?? "-"} 下</div>
+            <div>${item.sets ?? "-"} 組</div>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    // ===== 主題切換 =====
+    function applyTheme(theme) {
+      document.body.classList.remove("dark", "iceland");
+      if (theme === "dark") document.body.classList.add("dark");
+      if (theme === "iceland") document.body.classList.add("iceland");
+      localStorage.setItem("workoutTheme", theme);
+    }
+
+    // ===== 拖曳排序 =====
+    function enableDrag(container) {
+      let draggingEl = null;
+
+      container.addEventListener("dragstart", (e) => {
+        const row = e.target.closest(".sub-row");
+        if (!row) return;
+        draggingEl = row;
+        row.classList.add("dragging");
+      });
+
+      container.addEventListener("dragend", (e) => {
+        const row = e.target.closest(".sub-row");
+        if (row) row.classList.remove("dragging");
+        draggingEl = null;
+      });
+
+      container.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        const afterElement = getDragAfterElement(container, e.clientY);
+        if (!draggingEl) return;
+        if (afterElement == null) {
+          container.insertBefore(draggingEl, container.lastElementChild); // before add-button
+        } else {
+          container.insertBefore(draggingEl, afterElement);
+        }
+      });
+    }
+
+    function getDragAfterElement(container, y) {
+      const draggableElements = [
+        ...container.querySelectorAll(".sub-row:not(.dragging)"),
+      ];
+      let closest = { offset: Number.NEGATIVE_INFINITY, element: null };
+
+      draggableElements.forEach((child) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        if (offset < 0 && offset > closest.offset) {
+          closest = { offset, element: child };
+        }
+      });
+      return closest.element;
+    }
+
+    // ===== 新增動作 =====
+    function addExerciseRow(groupEl, groupName, name, muscle) {
+      const list = groupEl.querySelector(".sub-list");
+      const addBtn = list.querySelector(".add-ex-btn");
+
+      const row = document.createElement("div");
+      row.className = "sub-row";
+      row.setAttribute("draggable", "true");
+      row.setAttribute("data-name", name);
+
+      row.innerHTML = `
+        <div class="sub-handle">☰</div>
+        <div class="sub-main">
+          <div class="sub-title">${name}</div>
+          <div class="sub-muscle">${muscle || ""}</div>
+        </div>
+        <div class="sub-inputs">
+          <input class="weight-input" type="number" placeholder="重量 kg">
+          <input class="reps-input" type="number" placeholder="次數">
+          <input class="sets-input" type="number" placeholder="組數">
+        </div>
+      `;
+
+      list.insertBefore(row, addBtn);
+    }
+
+    // ===== 初始化 =====
+    document.addEventListener("DOMContentLoaded", () => {
+      // 主題
+      const themeSelector = document.getElementById("themeSelector");
+      const savedTheme = localStorage.getItem("workoutTheme") || "light";
+      themeSelector.value = savedTheme;
+      applyTheme(savedTheme);
+
+      themeSelector.addEventListener("change", () => {
+        applyTheme(themeSelector.value);
+      });
+
+      // 日期
+      document
+        .getElementById("prevDayBtn")
+        .addEventListener("click", () => {
+          currentDate.setDate(currentDate.getDate() - 1);
+          updateDateDisplay();
+        });
+
+      document
+        .getElementById("nextDayBtn")
+        .addEventListener("click", () => {
+          currentDate.setDate(currentDate.getDate() + 1);
+          updateDateDisplay();
+        });
+
+      updateDateDisplay();
+
+      // 展開 / 收合群組
+      document.querySelectorAll(".group-header").forEach((header) => {
+        header.addEventListener("click", () => {
+          const group = header.closest(".group");
+          group.classList.toggle("open");
+        });
+      });
+
+      // 拖曳啟用
+      document.querySelectorAll(".group .sub-list").forEach((list) => {
+        enableDrag(list);
+      });
+
+      // 新增動作按鈕
+      document.querySelectorAll(".add-ex-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const groupName = btn.getAttribute("data-group");
+          const groupEl = btn.closest(".group");
+          const name = prompt(`新增「${groupName}」動作名稱：`);
+          if (!name) return;
+          const muscle = prompt("這個動作主要訓練的肌群（可留白）：") || "";
+          addExerciseRow(groupEl, groupName, name, muscle);
+        });
+      });
+
+      // 儲存
+      document.getElementById("saveBtn").addEventListener("click", () => {
+        const dateStr = formatDate(currentDate);
+        const records = collectRecordsFromUI();
+        const all = loadAll();
+        const idx = all.findIndex((d) => d.date === dateStr);
+
+        if (records.length === 0) {
+          if (idx >= 0) {
+            all.splice(idx, 1);
+            saveAll(all);
+            setStatus("已刪除此日期的所有紀錄（因為你清空了所有欄位）。", "warn");
+          } else {
+            setStatus("沒有可儲存的內容。", "warn");
+          }
+        } else {
+          const newObj = { date: dateStr, records };
+          if (idx >= 0) all[idx] = newObj;
+          else all.push(newObj);
+          saveAll(all);
+          setStatus("已儲存 " + dateStr + " 的訓練紀錄。", "ok");
+        }
+
+        rebuildHistoryExerciseOptions();
+      });
+
+      // 歷史查詢
+      document
+        .getElementById("historyExerciseSelect")
+        .addEventListener("change", (e) => {
+          const name = e.target.value;
+          if (!name) {
+            document.getElementById("historyList").innerHTML =
+              `<div class="section-sub">目前尚未選擇動作或尚無紀錄。</div>`;
+            return;
+          }
+          showHistoryForExercise(name);
+        });
+
+      rebuildHistoryExerciseOptions();
+    });
+  </script>
+</body>
+</html>

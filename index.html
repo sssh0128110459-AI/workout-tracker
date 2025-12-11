@@ -20,7 +20,6 @@
       --input-bg: #f3eee3;
     }
 
-    /* 深色主題 */
     body.dark {
       --bg: #111111;
       --card: #1f1f1f;
@@ -32,7 +31,6 @@
       --input-bg: #161616;
     }
 
-    /* 冰島苔原：黑綠為主 */
     body.iceland {
       --bg: #050806;
       --card: #101a12;
@@ -90,16 +88,16 @@
 
     .card {
       background: var(--card);
-      padding: 14px 16px;
-      margin-bottom: 16px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
       border-radius: 12px;
       border: 1px solid var(--border);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
     }
 
     .section-title {
       font-weight: 700;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       font-size: 16px;
       display: flex;
       align-items: flex-start;
@@ -107,21 +105,53 @@
       gap: 8px;
     }
 
-    .section-sub {
-      font-size: 12px;
-      color: var(--subtext);
+    .section-toolbar {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
     }
 
     .section-sub-right {
       text-align: right;
       font-size: 11px;
       color: var(--subtext);
+      line-height: 1.4;
+    }
+
+    .toolbar-buttons {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-mini {
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      padding: 4px 8px;
+      font-size: 11px;
+      cursor: pointer;
+      background: var(--card);
+      color: var(--text);
+    }
+
+    .btn-mini:hover {
+      background: var(--accent-soft);
+    }
+
+    .btn-mini-primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .btn-mini-primary:hover {
+      filter: brightness(1.05);
     }
 
     .status-text {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--subtext);
-      margin-top: 6px;
+      margin-top: 4px;
     }
 
     .status-ok {
@@ -132,38 +162,14 @@
       color: #f0a14a;
     }
 
-    .btn {
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      padding: 6px 12px;
-      font-size: 13px;
-      cursor: pointer;
-      background: var(--card);
-      color: var(--text);
-    }
-
-    .btn:hover {
-      background: var(--accent-soft);
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #ffffff;
-      border-color: transparent;
-    }
-
-    .btn-primary:hover {
-      filter: brightness(1.05);
-    }
-
     /* 訓練項目群組 */
     .group {
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       border-radius: 10px;
       border: 1px solid var(--border);
       background: linear-gradient(
         to bottom,
-        rgba(0, 0, 0, 0.02),
+        rgba(0, 0, 0, 0.015),
         transparent
       );
     }
@@ -177,7 +183,7 @@
     }
 
     .group-name {
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 600;
     }
 
@@ -201,7 +207,7 @@
       display: block;
     }
 
-    /* 小標題列：動作 / 槓片 / 次數 / 組數 */
+    /* 小標題列 */
     .sub-header-row {
       display: flex;
       align-items: center;
@@ -309,6 +315,14 @@
       margin-top: 6px;
       font-size: 11px;
       padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px dashed var(--border);
+      background: rgba(0,0,0,0.02);
+      cursor: pointer;
+    }
+
+    .add-ex-btn:hover {
+      background: var(--accent-soft);
     }
 
     .dragging {
@@ -316,38 +330,49 @@
       border-style: dashed;
     }
 
-    /* 歷史查詢 */
+    /* 歷史面板（收合） */
+    .history-panel {
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px dashed var(--border);
+      display: none;
+    }
+
+    .history-panel.open {
+      display: block;
+    }
+
     .history-select-row {
       display: flex;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     select {
-      padding: 6px 10px;
+      padding: 4px 8px;
       border-radius: 999px;
       border: 1px solid var(--border);
       background: var(--card);
       color: var(--text);
-      font-size: 13px;
+      font-size: 11px;
     }
 
     .history-list {
-      font-size: 12px;
-      max-height: 220px;
+      font-size: 11px;
+      max-height: 160px;
       overflow-y: auto;
       border-radius: 8px;
       border: 1px solid var(--border);
-      padding: 6px 8px;
+      padding: 4px 6px;
       background: rgba(0, 0, 0, 0.02);
     }
 
     .history-item {
       display: flex;
       justify-content: space-between;
-      padding: 4px 0;
+      padding: 3px 0;
       border-bottom: 1px dashed var(--border);
     }
 
@@ -365,14 +390,14 @@
     }
 
     @media (max-width: 600px) {
+      .section-title {
+        align-items: flex-start;
+      }
+      .section-toolbar {
+        align-items: flex-end;
+      }
       .sub-header-row {
         font-size: 10px;
-      }
-      .sub-inputs {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-      .group-header {
-        padding-inline: 8px;
       }
       .sub-actions {
         flex-direction: row;
@@ -391,18 +416,23 @@
   </header>
 
   <main>
-    <!-- 訓練項目（主介面） -->
     <section class="card">
       <div class="section-title">
         <span>💪 訓練項目</span>
-        <div class="section-sub-right">
-          <div>動作 / 槓片 kg / 次數 下 / 組數 組</div>
-          <div id="currentDateLabel"></div>
+        <div class="section-toolbar">
+          <div class="section-sub-right">
+            <div>動作 / 槓片 kg / 次數 下 / 組數 組</div>
+            <div id="currentDateLabel"></div>
+          </div>
+          <div class="toolbar-buttons">
+            <button class="btn-mini" id="historyToggleBtn">📜 歷史</button>
+            <button class="btn-mini btn-mini-primary" id="saveBtn">💾 儲存</button>
+          </div>
         </div>
       </div>
 
       <div id="groupsContainer">
-        <!-- 胸 -->
+        <!--=== 胸部 ===-->
         <div class="group" data-group="胸">
           <div class="group-header">
             <div class="group-name">胸部</div>
@@ -470,11 +500,11 @@
               </div>
             </div>
 
-            <button class="btn add-ex-btn" data-group="胸">＋ 新增胸部動作</button>
+            <button class="add-ex-btn" data-group="胸">＋ 新增胸部動作</button>
           </div>
         </div>
 
-        <!-- 背 -->
+        <!--=== 背部 ===-->
         <div class="group" data-group="背">
           <div class="group-header">
             <div class="group-name">背部</div>
@@ -542,11 +572,11 @@
               </div>
             </div>
 
-            <button class="btn add-ex-btn" data-group="背">＋ 新增背部動作</button>
+            <button class="add-ex-btn" data-group="背">＋ 新增背部動作</button>
           </div>
         </div>
 
-        <!-- 腿 -->
+        <!--=== 腿部 ===-->
         <div class="group" data-group="腿">
           <div class="group-header">
             <div class="group-name">腿部</div>
@@ -614,11 +644,11 @@
               </div>
             </div>
 
-            <button class="btn add-ex-btn" data-group="腿">＋ 新增腿部動作</button>
+            <button class="add-ex-btn" data-group="腿">＋ 新增腿部動作</button>
           </div>
         </div>
 
-        <!-- 肩 -->
+        <!--=== 肩部 ===-->
         <div class="group" data-group="肩">
           <div class="group-header">
             <div class="group-name">肩部</div>
@@ -669,11 +699,11 @@
               </div>
             </div>
 
-            <button class="btn add-ex-btn" data-group="肩">＋ 新增肩部動作</button>
+            <button class="add-ex-btn" data-group="肩">＋ 新增肩部動作</button>
           </div>
         </div>
 
-        <!-- 有氧 -->
+        <!--=== 有氧 ===-->
         <div class="group" data-group="有氧">
           <div class="group-header">
             <div class="group-name">有氧</div>
@@ -741,31 +771,29 @@
               </div>
             </div>
 
-            <button class="btn add-ex-btn" data-group="有氧">＋ 新增有氧動作</button>
+            <button class="add-ex-btn" data-group="有氧">＋ 新增有氧動作</button>
           </div>
         </div>
       </div>
 
-      <button class="btn-primary" id="saveBtn" style="width:100%;margin-top:10px;">
-        💾 儲存這次訓練（記為今天）
-      </button>
-      <div id="saveStatus" class="status-text"></div>
-    </section>
+      <!-- 歷史面板：預設收合，按右上角「歷史」打開 -->
+      <div id="historyPanel" class="history-panel">
+        <div class="history-select-row">
+          <span class="section-sub-right" style="flex:1 1 auto;text-align:left;">
+            選一個動作，查看不同日期的槓片 kg / 次數 / 組數：
+          </span>
+          <select id="historyExerciseSelect">
+            <option value="">請選擇動作</option>
+          </select>
+        </div>
+        <div id="historyList" class="history-list">
+          <div class="section-sub-right" style="text-align:left;">
+            目前尚未選擇動作或尚無紀錄。
+          </div>
+        </div>
+      </div>
 
-    <!-- 歷史查詢 -->
-    <section class="card">
-      <div class="section-title">
-        <span>📊 歷史查詢</span>
-      </div>
-      <div class="history-select-row">
-        <span class="section-sub">選一個動作，查看不同日期的槓片 kg / 次數 / 組數：</span>
-        <select id="historyExerciseSelect">
-          <option value="">請選擇動作</option>
-        </select>
-      </div>
-      <div id="historyList" class="history-list">
-        <div class="section-sub">目前尚未選擇動作或尚無紀錄。</div>
-      </div>
+      <div id="saveStatus" class="status-text"></div>
     </section>
   </main>
 
@@ -779,13 +807,12 @@
       return `${y}-${m}-${day}`;
     }
 
-    // ===== 儲存 / 讀取 =====
+    /* ===== 儲存 / 讀取 ===== */
     function loadAll() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         return raw ? JSON.parse(raw) : [];
-      } catch (e) {
-        console.error("讀取失敗", e);
+      } catch {
         return [];
       }
     }
@@ -846,7 +873,7 @@
             records.push({
               group: groupName,
               name,
-              weight: weight ? Number(weight) : null, // 槓片總重
+              weight: weight ? Number(weight) : null,
               reps: reps ? Number(reps) : null,
               sets: sets ? Number(sets) : null,
             });
@@ -856,7 +883,7 @@
       return records;
     }
 
-    // ===== 歷史查詢 =====
+    /* ===== 歷史查詢 ===== */
     function rebuildHistoryExerciseOptions() {
       const all = loadAll();
       const set = new Set();
@@ -890,7 +917,7 @@
         showHistoryForExercise(current);
       } else {
         document.getElementById("historyList").innerHTML =
-          `<div class="section-sub">目前尚未選擇動作或尚無紀錄。</div>`;
+          `<div class="section-sub-right" style="text-align:left;">目前尚未選擇動作或尚無紀錄。</div>`;
       }
     }
 
@@ -911,7 +938,7 @@
 
       if (filtered.length === 0) {
         container.innerHTML =
-          `<div class="section-sub">這個動作目前沒有紀錄。</div>`;
+          `<div class="section-sub-right" style="text-align:left;">這個動作目前沒有紀錄。</div>`;
         return;
       }
 
@@ -929,7 +956,7 @@
       });
     }
 
-    // ===== 主題切換 =====
+    /* ===== 主題切換 ===== */
     function applyTheme(theme) {
       document.body.classList.remove("dark", "iceland");
       if (theme === "dark") document.body.classList.add("dark");
@@ -937,7 +964,7 @@
       localStorage.setItem("workoutTheme", theme);
     }
 
-    // ===== 拖曳排序（只用把手拖） =====
+    /* ===== 拖曳排序 ===== */
     function enableDrag(container) {
       let draggingEl = null;
 
@@ -962,12 +989,9 @@
         e.preventDefault();
         const afterElement = getDragAfterElement(container, e.clientY);
         if (!draggingEl) return;
-
-        // 避開 header / add button，只在真正的 sub-row 間排序
-        const rows = [...container.querySelectorAll(".sub-row, .add-ex-btn")];
         const addBtn = container.querySelector(".add-ex-btn");
 
-        if (afterElement == null || afterElement === addBtn) {
+        if (!afterElement || afterElement === addBtn) {
           container.insertBefore(draggingEl, addBtn);
         } else {
           container.insertBefore(draggingEl, afterElement);
@@ -991,7 +1015,7 @@
       return closest.element;
     }
 
-    // ===== 新增動作（包含編輯 / 刪除按鈕） =====
+    /* ===== 新增動作 ===== */
     function addExerciseRow(groupEl, groupName, name, muscle) {
       const list = groupEl.querySelector(".sub-list");
       const addBtn = list.querySelector(".add-ex-btn");
@@ -1002,8 +1026,8 @@
       row.setAttribute("data-name", name);
 
       const isCardio = groupName === "有氧";
-
       let inputsHTML;
+
       if (isCardio) {
         inputsHTML = `
           <div class="sub-inputs">
@@ -1038,7 +1062,7 @@
       list.insertBefore(row, addBtn);
     }
 
-    // ===== 載入「最近一次訓練」 =====
+    /* ===== 載入最近一次訓練 ===== */
     function loadLatestSession() {
       const all = loadAll();
       const labelEl = document.getElementById("currentDateLabel");
@@ -1056,7 +1080,7 @@
       loadDataForDate(last.date);
     }
 
-    // ===== 初始化 =====
+    /* ===== 初始化 ===== */
     document.addEventListener("DOMContentLoaded", () => {
       // 主題
       const themeSelector = document.getElementById("themeSelector");
@@ -1080,7 +1104,7 @@
         enableDrag(list);
       });
 
-      // 新增動作按鈕
+      // 新增動作
       document.querySelectorAll(".add-ex-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
           const groupName = btn.getAttribute("data-group");
@@ -1089,10 +1113,11 @@
           if (!name) return;
           const muscle = prompt("這個動作主要訓練的肌群（可留白）：") || "";
           addExerciseRow(groupEl, groupName, name, muscle);
+          rebuildHistoryExerciseOptions();
         });
       });
 
-      // 編輯 & 刪除（事件委派）
+      // 編輯 / 刪除
       document.addEventListener("click", (e) => {
         const editBtn = e.target.closest(".edit-ex-btn");
         const delBtn = e.target.closest(".delete-ex-btn");
@@ -1106,12 +1131,12 @@
 
           const newName = prompt("編輯動作名稱：", oldName);
           if (!newName) return;
-
           const newMuscle = prompt("編輯主要肌群（可留白）：", oldMuscle) || "";
 
           titleEl.textContent = newName;
           muscleEl.textContent = newMuscle;
           row.setAttribute("data-name", newName);
+          rebuildHistoryExerciseOptions();
         }
 
         if (delBtn) {
@@ -1119,15 +1144,19 @@
           const title = row.querySelector(".sub-title").textContent.trim();
           if (confirm(`要刪除動作「${title}」嗎？`)) {
             row.remove();
+            rebuildHistoryExerciseOptions();
           }
         }
       });
 
-      // 一進來就載入最近一次訓練
-      loadLatestSession();
-      rebuildHistoryExerciseOptions();
+      // 歷史面板開關
+      const historyPanel = document.getElementById("historyPanel");
+      document.getElementById("historyToggleBtn").addEventListener("click", () => {
+        const isOpen = historyPanel.classList.toggle("open");
+        if (isOpen) rebuildHistoryExerciseOptions();
+      });
 
-      // 儲存（永遠記成「今天」這一次訓練）
+      // 儲存（記為今天）
       document.getElementById("saveBtn").addEventListener("click", () => {
         const dateStr = formatDate(new Date());
         const records = collectRecordsFromUI();
@@ -1138,7 +1167,7 @@
           if (idx >= 0) {
             all.splice(idx, 1);
             saveAll(all);
-            setStatus("已刪除此日期的所有紀錄（因為你清空了所有欄位）。", "warn");
+            setStatus("已刪除此日期的紀錄。", "warn");
           } else {
             setStatus("沒有可儲存的內容。", "warn");
           }
@@ -1155,18 +1184,22 @@
         rebuildHistoryExerciseOptions();
       });
 
-      // 歷史查詢
+      // 歷史下拉選單
       document
         .getElementById("historyExerciseSelect")
         .addEventListener("change", (e) => {
           const name = e.target.value;
           if (!name) {
             document.getElementById("historyList").innerHTML =
-              `<div class="section-sub">目前尚未選擇動作或尚無紀錄。</div>`;
+              `<div class="section-sub-right" style="text-align:left;">目前尚未選擇動作或尚無紀錄。</div>`;
             return;
           }
           showHistoryForExercise(name);
         });
+
+      // 載入最近一次
+      loadLatestSession();
+      rebuildHistoryExerciseOptions();
     });
   </script>
 </body>

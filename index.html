@@ -62,22 +62,13 @@
     header {
       padding: 16px;
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-start;
       align-items: center;
     }
 
     h1 {
       margin: 0;
       font-size: 20px;
-    }
-
-    .theme-select {
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--text);
-      font-size: 13px;
     }
 
     main {
@@ -87,6 +78,7 @@
     }
 
     .card {
+      position: relative;
       background: var(--card);
       padding: 12px 14px;
       margin-bottom: 14px;
@@ -100,35 +92,29 @@
       margin-bottom: 8px;
       font-size: 16px;
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
       gap: 8px;
     }
 
     .section-toolbar {
       display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 4px;
+      align-items: center;
+      gap: 6px;
     }
 
     .section-sub-right {
-      text-align: right;
       font-size: 11px;
       color: var(--subtext);
+      text-align: right;
       line-height: 1.4;
-    }
-
-    .toolbar-buttons {
-      display: flex;
-      gap: 6px;
     }
 
     .btn-mini {
       border-radius: 999px;
       border: 1px solid var(--border);
       padding: 4px 8px;
-      font-size: 11px;
+      font-size: 12px;
       cursor: pointer;
       background: var(--card);
       color: var(--text);
@@ -136,16 +122,6 @@
 
     .btn-mini:hover {
       background: var(--accent-soft);
-    }
-
-    .btn-mini-primary {
-      background: var(--accent);
-      color: #fff;
-      border-color: transparent;
-    }
-
-    .btn-mini-primary:hover {
-      filter: brightness(1.05);
     }
 
     .status-text {
@@ -160,6 +136,74 @@
 
     .status-warn {
       color: #f0a14a;
+    }
+
+    /* 工具面板（主題 + 儲存 + 歷史） */
+    .tools-panel {
+      position: absolute;
+      top: 40px;
+      right: 12px;
+      width: min(320px, 80vw);
+      background: var(--card);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+      padding: 8px 10px;
+      font-size: 11px;
+      display: none;
+      z-index: 10;
+    }
+
+    .tools-panel.open {
+      display: block;
+    }
+
+    .tools-section {
+      margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed var(--border);
+    }
+
+    .tools-section:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .tools-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .tools-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .theme-select {
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 11px;
+    }
+
+    .btn-mini-primary {
+      border-radius: 999px;
+      border: 1px solid transparent;
+      padding: 5px 8px;
+      font-size: 11px;
+      cursor: pointer;
+      background: var(--accent);
+      color: #fff;
+      width: 100%;
+    }
+
+    .btn-mini-primary:hover {
+      filter: brightness(1.05);
     }
 
     /* 訓練項目群組 */
@@ -207,7 +251,7 @@
       display: block;
     }
 
-    /* 小標題列 */
+    /* 小標題列：重量 / 次數 / 組數 */
     .sub-header-row {
       display: flex;
       align-items: center;
@@ -227,8 +271,13 @@
       flex: 1.8;
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 4px;
+      column-gap: 8px;
       text-align: center;
+    }
+
+    .sub-header-inputs span {
+      display: block;
+      white-space: nowrap;
     }
 
     /* 每列動作 */
@@ -265,7 +314,8 @@
       flex: 1.8;
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 4px;
+      column-gap: 8px;
+      row-gap: 4px;
     }
 
     .sub-inputs input {
@@ -330,24 +380,13 @@
       border-style: dashed;
     }
 
-    /* 歷史面板（收合） */
-    .history-panel {
-      margin-top: 6px;
-      padding-top: 6px;
-      border-top: 1px dashed var(--border);
-      display: none;
-    }
-
-    .history-panel.open {
-      display: block;
-    }
-
+    /* 歷史區塊（在工具面板內） */
     .history-select-row {
       display: flex;
       gap: 6px;
       flex-wrap: wrap;
       align-items: center;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     select {
@@ -361,9 +400,9 @@
 
     .history-list {
       font-size: 11px;
-      max-height: 160px;
+      max-height: 140px;
       overflow-y: auto;
-      border-radius: 8px;
+      border-radius: 6px;
       border: 1px solid var(--border);
       padding: 4px 6px;
       background: rgba(0, 0, 0, 0.02);
@@ -391,10 +430,7 @@
 
     @media (max-width: 600px) {
       .section-title {
-        align-items: flex-start;
-      }
-      .section-toolbar {
-        align-items: flex-end;
+        align-items: center;
       }
       .sub-header-row {
         font-size: 10px;
@@ -408,11 +444,6 @@
 <body>
   <header>
     <h1>健身紀錄</h1>
-    <select id="themeSelector" class="theme-select">
-      <option value="light">🌞 淺色</option>
-      <option value="dark">🌙 深色</option>
-      <option value="iceland">🍃 冰島苔原</option>
-    </select>
   </header>
 
   <main>
@@ -420,13 +451,42 @@
       <div class="section-title">
         <span>💪 訓練項目</span>
         <div class="section-toolbar">
-          <div class="section-sub-right">
-            <div>動作 / 槓片 kg / 次數 下 / 組數 組</div>
-            <div id="currentDateLabel"></div>
+          <div class="section-sub-right" id="currentDateLabel"></div>
+          <button class="btn-mini" id="toolsBtn">⋯</button>
+        </div>
+      </div>
+
+      <!-- 工具面板：主題 + 儲存 + 歷史 -->
+      <div id="toolsPanel" class="tools-panel">
+        <div class="tools-section">
+          <div class="tools-title">主題</div>
+          <div class="tools-row">
+            <span>背景顏色</span>
+            <select id="themeSelector" class="theme-select">
+              <option value="light">淺色</option>
+              <option value="dark">深色</option>
+              <option value="iceland">冰島苔原</option>
+            </select>
           </div>
-          <div class="toolbar-buttons">
-            <button class="btn-mini" id="historyToggleBtn">📜 歷史</button>
-            <button class="btn-mini btn-mini-primary" id="saveBtn">💾 儲存</button>
+        </div>
+
+        <div class="tools-section">
+          <div class="tools-title">儲存</div>
+          <button class="btn-mini-primary" id="saveBtn">💾 儲存今天訓練</button>
+        </div>
+
+        <div class="tools-section">
+          <div class="tools-title">歷史查詢</div>
+          <div class="history-select-row">
+            <span style="flex:1 1 auto;">選擇動作：</span>
+            <select id="historyExerciseSelect">
+              <option value="">請選擇</option>
+            </select>
+          </div>
+          <div id="historyList" class="history-list">
+            <div style="color:var(--subtext);">
+              尚未選擇動作或尚無紀錄。
+            </div>
           </div>
         </div>
       </div>
@@ -442,11 +502,11 @@
             <div class="sub-header-row">
               <div class="sub-header-main">動作</div>
               <div class="sub-header-inputs">
-                <span>槓片 (kg)</span>
-                <span>次數 (下)</span>
-                <span>組數 (組)</span>
+                <span>重量 kg</span>
+                <span>次數</span>
+                <span>組數</span>
               </div>
-              <div style="width:40px;text-align:center;">編輯</div>
+              <div style="width:40px;text-align:center;">✎</div>
             </div>
 
             <div class="sub-row" draggable="true" data-name="平板啞鈴臥推">
@@ -456,13 +516,12 @@
                 <div class="sub-muscle">胸大肌 / 肱三頭肌</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="槓片 kg">
+                <input class="weight-input" type="number" placeholder="重量">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
               <div class="sub-actions">
                 <button type="button" class="icon-btn edit-ex-btn">✎</button>
-                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -473,13 +532,12 @@
                 <div class="sub-muscle">上胸 / 肱三頭肌</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="槓片 kg">
+                <input class="weight-input" type="number" placeholder="重量">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
               <div class="sub-actions">
                 <button type="button" class="icon-btn edit-ex-btn">✎</button>
-                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -490,13 +548,12 @@
                 <div class="sub-muscle">胸大肌伸展</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="槓片 kg">
+                <input class="weight-input" type="number" placeholder="重量">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
               <div class="sub-actions">
                 <button type="button" class="icon-btn edit-ex-btn">✎</button>
-                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -514,11 +571,11 @@
             <div class="sub-header-row">
               <div class="sub-header-main">動作</div>
               <div class="sub-header-inputs">
-                <span>槓片 (kg)</span>
-                <span>次數 (下)</span>
-                <span>組數 (組)</span>
+                <span>重量 kg</span>
+                <span>次數</span>
+                <span>組數</span>
               </div>
-              <div style="width:40px;text-align:center;">編輯</div>
+              <div style="width:40px;text-align:center;">✎</div>
             </div>
 
             <div class="sub-row" draggable="true" data-name="引體向上">
@@ -528,13 +585,12 @@
                 <div class="sub-muscle">背闊肌 / 肱二頭肌</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="槓片 / 負重">
+                <input class="weight-input" type="number" placeholder="重量">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
               <div class="sub-actions">
                 <button type="button" class="icon-btn edit-ex-btn">✎</button>
-                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -545,13 +601,12 @@
                 <div class="sub-muscle">背闊肌</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="槓片 kg">
+                <input class="weight-input" type="number" placeholder="重量">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
               <div class="sub-actions">
                 <button type="button" class="icon-btn edit-ex-btn">✎</button>
-                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -562,13 +617,12 @@
                 <div class="sub-muscle">菱形肌 / 斜方肌 / 二頭</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="槓片 kg">
+                <input class="weight-input" type="number" placeholder="重量">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
               <div class="sub-actions">
                 <button type="button" class="icon-btn edit-ex-btn">✎</button>
-                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -586,11 +640,11 @@
             <div class="sub-header-row">
               <div class="sub-header-main">動作</div>
               <div class="sub-header-inputs">
-                <span>槓片 (kg)</span>
-                <span>次數 (下)</span>
-                <span>組數 (組)</span>
+                <span>重量 kg</span>
+                <span>次數</span>
+                <span>組數</span>
               </div>
-              <div style="width:40px;text-align:center;">編輯</div>
+              <div style="width:40px;text-align:center;">✎</div>
             </div>
 
             <div class="sub-row" draggable="true" data-name="深蹲">
@@ -600,13 +654,12 @@
                 <div class="sub-muscle">股四頭 / 臀</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="槓片 kg">
+                <input class="weight-input" type="number" placeholder="重量">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
               <div class="sub-actions">
                 <button type="button" class="icon-btn edit-ex-btn">✎</button>
-                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -617,13 +670,12 @@
                 <div class="sub-muscle">股四頭 / 臀</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="槓片 kg">
+                <input class="weight-input" type="number" placeholder="重量">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
               <div class="sub-actions">
                 <button type="button" class="icon-btn edit-ex-btn">✎</button>
-                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -634,13 +686,12 @@
                 <div class="sub-muscle">腿後肌 / 臀</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="槓片 kg">
+                <input class="weight-input" type="number" placeholder="重量">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
               <div class="sub-actions">
                 <button type="button" class="icon-btn edit-ex-btn">✎</button>
-                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -658,11 +709,11 @@
             <div class="sub-header-row">
               <div class="sub-header-main">動作</div>
               <div class="sub-header-inputs">
-                <span>槓片 (kg)</span>
-                <span>次數 (下)</span>
-                <span>組數 (組)</span>
+                <span>重量 kg</span>
+                <span>次數</span>
+                <span>組數</span>
               </div>
-              <div style="width:40px;text-align:center;">編輯</div>
+              <div style="width:40px;text-align:center;">✎</div>
             </div>
 
             <div class="sub-row" draggable="true" data-name="啞鈴肩推">
@@ -672,13 +723,12 @@
                 <div class="sub-muscle">三角肌前中束</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="槓片 kg">
+                <input class="weight-input" type="number" placeholder="重量">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
               <div class="sub-actions">
                 <button type="button" class="icon-btn edit-ex-btn">✎</button>
-                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -689,13 +739,12 @@
                 <div class="sub-muscle">三角肌中束</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="槓片 kg">
+                <input class="weight-input" type="number" placeholder="重量">
                 <input class="reps-input" type="number" placeholder="次數">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
               <div class="sub-actions">
                 <button type="button" class="icon-btn edit-ex-btn">✎</button>
-                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -713,11 +762,11 @@
             <div class="sub-header-row">
               <div class="sub-header-main">動作</div>
               <div class="sub-header-inputs">
-                <span>強度 / 阻力</span>
-                <span>時間 / 次數</span>
+                <span>強度</span>
+                <span>時間</span>
                 <span>組 / 間歇</span>
               </div>
-              <div style="width:40px;text-align:center;">編輯</div>
+              <div style="width:40px;text-align:center;">✎</div>
             </div>
 
             <div class="sub-row" draggable="true" data-name="跑步機">
@@ -727,13 +776,12 @@
                 <div class="sub-muscle">心肺 / 下肢</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="速度 / 斜度">
-                <input class="reps-input" type="number" placeholder="時間 分">
+                <input class="weight-input" type="number" placeholder="強度">
+                <input class="reps-input" type="number" placeholder="時間">
                 <input class="sets-input" type="number" placeholder="組 / 間歇">
               </div>
               <div class="sub-actions">
                 <button type="button" class="icon-btn edit-ex-btn">✎</button>
-                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -744,13 +792,12 @@
                 <div class="sub-muscle">腿部 / 心肺</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="阻力等級">
-                <input class="reps-input" type="number" placeholder="時間 分">
+                <input class="weight-input" type="number" placeholder="強度">
+                <input class="reps-input" type="number" placeholder="時間">
                 <input class="sets-input" type="number" placeholder="組 / 間歇">
               </div>
               <div class="sub-actions">
                 <button type="button" class="icon-btn edit-ex-btn">✎</button>
-                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
@@ -761,34 +808,16 @@
                 <div class="sub-muscle">小腿 / 心肺</div>
               </div>
               <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="節奏 / 負重">
-                <input class="reps-input" type="number" placeholder="次數 / 秒">
+                <input class="weight-input" type="number" placeholder="強度">
+                <input class="reps-input" type="number" placeholder="時間">
                 <input class="sets-input" type="number" placeholder="組數">
               </div>
               <div class="sub-actions">
                 <button type="button" class="icon-btn edit-ex-btn">✎</button>
-                <button type="button" class="icon-btn delete-ex-btn">✕</button>
               </div>
             </div>
 
             <button class="add-ex-btn" data-group="有氧">＋ 新增有氧動作</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- 歷史面板：預設收合，按右上角「歷史」打開 -->
-      <div id="historyPanel" class="history-panel">
-        <div class="history-select-row">
-          <span class="section-sub-right" style="flex:1 1 auto;text-align:left;">
-            選一個動作，查看不同日期的槓片 kg / 次數 / 組數：
-          </span>
-          <select id="historyExerciseSelect">
-            <option value="">請選擇動作</option>
-          </select>
-        </div>
-        <div id="historyList" class="history-list">
-          <div class="section-sub-right" style="text-align:left;">
-            目前尚未選擇動作或尚無紀錄。
           </div>
         </div>
       </div>
@@ -902,7 +931,7 @@
 
       const select = document.getElementById("historyExerciseSelect");
       const current = select.value;
-      select.innerHTML = `<option value="">請選擇動作</option>`;
+      select.innerHTML = `<option value="">請選擇</option>`;
       Array.from(set)
         .sort()
         .forEach((name) => {
@@ -917,7 +946,7 @@
         showHistoryForExercise(current);
       } else {
         document.getElementById("historyList").innerHTML =
-          `<div class="section-sub-right" style="text-align:left;">目前尚未選擇動作或尚無紀錄。</div>`;
+          `<div style="color:var(--subtext);">尚未選擇動作或尚無紀錄。</div>`;
       }
     }
 
@@ -938,7 +967,7 @@
 
       if (filtered.length === 0) {
         container.innerHTML =
-          `<div class="section-sub-right" style="text-align:left;">這個動作目前沒有紀錄。</div>`;
+          `<div style="color:var(--subtext);">這個動作目前沒有紀錄。</div>`;
         return;
       }
 
@@ -948,7 +977,7 @@
         div.innerHTML = `
           <div class="history-date">${item.date}</div>
           <div class="history-meta">
-            <div>${item.weight ?? "-"} kg 槓片 × ${item.reps ?? "-"} 下</div>
+            <div>${item.weight ?? "-"} kg × ${item.reps ?? "-"} 次</div>
             <div>${item.sets ?? "-"} 組</div>
           </div>
         `;
@@ -1031,15 +1060,15 @@
       if (isCardio) {
         inputsHTML = `
           <div class="sub-inputs">
-            <input class="weight-input" type="number" placeholder="強度 / 阻力">
-            <input class="reps-input" type="number" placeholder="時間 / 次數">
+            <input class="weight-input" type="number" placeholder="強度">
+            <input class="reps-input" type="number" placeholder="時間">
             <input class="sets-input" type="number" placeholder="組 / 間歇">
           </div>
         `;
       } else {
         inputsHTML = `
           <div class="sub-inputs">
-            <input class="weight-input" type="number" placeholder="槓片 kg">
+            <input class="weight-input" type="number" placeholder="重量">
             <input class="reps-input" type="number" placeholder="次數">
             <input class="sets-input" type="number" placeholder="組數">
           </div>
@@ -1055,21 +1084,20 @@
         ${inputsHTML}
         <div class="sub-actions">
           <button type="button" class="icon-btn edit-ex-btn">✎</button>
-          <button type="button" class="icon-btn delete-ex-btn">✕</button>
         </div>
       `;
 
       list.insertBefore(row, addBtn);
     }
 
-    /* ===== 載入最近一次訓練 ===== */
+    /* ===== 最近一次訓練 ===== */
     function loadLatestSession() {
       const all = loadAll();
       const labelEl = document.getElementById("currentDateLabel");
 
       if (!all.length) {
         clearAllInputs();
-        labelEl.textContent = "目前顯示：尚未有任何訓練紀錄";
+        labelEl.textContent = "目前顯示：尚未有訓練紀錄";
         setStatus("尚未有訓練紀錄，先填寫一次吧。", "warn");
         return;
       }
@@ -1082,6 +1110,26 @@
 
     /* ===== 初始化 ===== */
     document.addEventListener("DOMContentLoaded", () => {
+      // 工具面板開關
+      const toolsBtn = document.getElementById("toolsBtn");
+      const toolsPanel = document.getElementById("toolsPanel");
+      toolsBtn.addEventListener("click", () => {
+        toolsPanel.classList.toggle("open");
+        if (toolsPanel.classList.contains("open")) {
+          rebuildHistoryExerciseOptions();
+        }
+      });
+
+      // 點卡片外關閉面板（簡單版）
+      document.addEventListener("click", (e) => {
+        if (
+          !e.target.closest(".card") ||
+          (e.target.closest(".card") && !e.target.closest("#toolsPanel") && !e.target.closest("#toolsBtn"))
+        ) {
+          toolsPanel.classList.remove("open");
+        }
+      }, true);
+
       // 主題
       const themeSelector = document.getElementById("themeSelector");
       const savedTheme = localStorage.getItem("workoutTheme") || "light";
@@ -1117,11 +1165,9 @@
         });
       });
 
-      // 編輯 / 刪除
+      // 編輯 / 刪除（整合在鉛筆裡）
       document.addEventListener("click", (e) => {
         const editBtn = e.target.closest(".edit-ex-btn");
-        const delBtn = e.target.closest(".delete-ex-btn");
-
         if (editBtn) {
           const row = editBtn.closest(".sub-row");
           const titleEl = row.querySelector(".sub-title");
@@ -1129,31 +1175,30 @@
           const oldName = titleEl.textContent.trim();
           const oldMuscle = muscleEl.textContent.trim();
 
-          const newName = prompt("編輯動作名稱：", oldName);
-          if (!newName) return;
-          const newMuscle = prompt("編輯主要肌群（可留白）：", oldMuscle) || "";
-
-          titleEl.textContent = newName;
-          muscleEl.textContent = newMuscle;
-          row.setAttribute("data-name", newName);
-          rebuildHistoryExerciseOptions();
-        }
-
-        if (delBtn) {
-          const row = delBtn.closest(".sub-row");
-          const title = row.querySelector(".sub-title").textContent.trim();
-          if (confirm(`要刪除動作「${title}」嗎？`)) {
-            row.remove();
+          const choice = prompt(
+            `動作：「${oldName}」\n` +
+            `輸入 1：編輯名稱與肌群\n` +
+            `輸入 2：刪除此動作`,
+            "1"
+          );
+          if (!choice) return;
+          if (choice === "2") {
+            if (confirm(`確定要刪除「${oldName}」嗎？`)) {
+              row.remove();
+              rebuildHistoryExerciseOptions();
+            }
+            return;
+          }
+          if (choice === "1") {
+            const newName = prompt("編輯動作名稱：", oldName);
+            if (!newName) return;
+            const newMuscle = prompt("編輯主要肌群（可留白）：", oldMuscle) || "";
+            titleEl.textContent = newName;
+            muscleEl.textContent = newMuscle;
+            row.setAttribute("data-name", newName);
             rebuildHistoryExerciseOptions();
           }
         }
-      });
-
-      // 歷史面板開關
-      const historyPanel = document.getElementById("historyPanel");
-      document.getElementById("historyToggleBtn").addEventListener("click", () => {
-        const isOpen = historyPanel.classList.toggle("open");
-        if (isOpen) rebuildHistoryExerciseOptions();
       });
 
       // 儲存（記為今天）
@@ -1184,14 +1229,14 @@
         rebuildHistoryExerciseOptions();
       });
 
-      // 歷史下拉選單
+      // 歷史下拉
       document
         .getElementById("historyExerciseSelect")
         .addEventListener("change", (e) => {
           const name = e.target.value;
           if (!name) {
             document.getElementById("historyList").innerHTML =
-              `<div class="section-sub-right" style="text-align:left;">目前尚未選擇動作或尚無紀錄。</div>`;
+              `<div style="color:var(--subtext);">尚未選擇動作或尚無紀錄。</div>`;
             return;
           }
           showHistoryForExercise(name);

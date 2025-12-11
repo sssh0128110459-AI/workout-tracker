@@ -263,6 +263,11 @@
       color: var(--subtext);
     }
 
+    .sub-header-handle {
+      width: 20px;
+      padding: 0 4px;
+    }
+
     .sub-header-main {
       flex: 1.5;
     }
@@ -278,6 +283,13 @@
     .sub-header-inputs span {
       display: block;
       white-space: nowrap;
+    }
+
+    .sub-header-actions {
+      width: 40px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--subtext);
     }
 
     /* 每列動作 */
@@ -342,9 +354,12 @@
     }
 
     .sub-actions {
+      width: 40px;
       display: flex;
       flex-direction: column;
       gap: 4px;
+      align-items: center;
+      justify-content: center;
     }
 
     .icon-btn {
@@ -436,7 +451,7 @@
         font-size: 10px;
       }
       .sub-actions {
-        flex-direction: row;
+        width: 34px;
       }
     }
   </style>
@@ -471,7 +486,6 @@
         </div>
 
         <div class="tools-section">
-          <div class="tools-title">儲存</div>
           <button class="btn-mini-primary" id="saveBtn">💾 儲存今天訓練</button>
         </div>
 
@@ -500,13 +514,14 @@
           </div>
           <div class="sub-list">
             <div class="sub-header-row">
+              <div class="sub-header-handle"></div>
               <div class="sub-header-main">動作</div>
               <div class="sub-header-inputs">
                 <span>重量 kg</span>
                 <span>次數</span>
                 <span>組數</span>
               </div>
-              <div style="width:40px;text-align:center;">✎</div>
+              <div class="sub-header-actions"></div>
             </div>
 
             <div class="sub-row" draggable="true" data-name="平板啞鈴臥推">
@@ -569,13 +584,14 @@
           </div>
           <div class="sub-list">
             <div class="sub-header-row">
+              <div class="sub-header-handle"></div>
               <div class="sub-header-main">動作</div>
               <div class="sub-header-inputs">
                 <span>重量 kg</span>
                 <span>次數</span>
                 <span>組數</span>
               </div>
-              <div style="width:40px;text-align:center;">✎</div>
+              <div class="sub-header-actions"></div>
             </div>
 
             <div class="sub-row" draggable="true" data-name="引體向上">
@@ -638,13 +654,14 @@
           </div>
           <div class="sub-list">
             <div class="sub-header-row">
+              <div class="sub-header-handle"></div>
               <div class="sub-header-main">動作</div>
               <div class="sub-header-inputs">
                 <span>重量 kg</span>
                 <span>次數</span>
                 <span>組數</span>
               </div>
-              <div style="width:40px;text-align:center;">✎</div>
+              <div class="sub-header-actions"></div>
             </div>
 
             <div class="sub-row" draggable="true" data-name="深蹲">
@@ -707,13 +724,14 @@
           </div>
           <div class="sub-list">
             <div class="sub-header-row">
+              <div class="sub-header-handle"></div>
               <div class="sub-header-main">動作</div>
               <div class="sub-header-inputs">
                 <span>重量 kg</span>
                 <span>次數</span>
                 <span>組數</span>
               </div>
-              <div style="width:40px;text-align:center;">✎</div>
+              <div class="sub-header-actions"></div>
             </div>
 
             <div class="sub-row" draggable="true" data-name="啞鈴肩推">
@@ -760,13 +778,14 @@
           </div>
           <div class="sub-list">
             <div class="sub-header-row">
+              <div class="sub-header-handle"></div>
               <div class="sub-header-main">動作</div>
               <div class="sub-header-inputs">
                 <span>強度</span>
                 <span>時間</span>
                 <span>組 / 間歇</span>
               </div>
-              <div style="width:40px;text-align:center;">✎</div>
+              <div class="sub-header-actions"></div>
             </div>
 
             <div class="sub-row" draggable="true" data-name="跑步機">
@@ -1113,22 +1132,20 @@
       // 工具面板開關
       const toolsBtn = document.getElementById("toolsBtn");
       const toolsPanel = document.getElementById("toolsPanel");
-      toolsBtn.addEventListener("click", () => {
+      toolsBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
         toolsPanel.classList.toggle("open");
         if (toolsPanel.classList.contains("open")) {
           rebuildHistoryExerciseOptions();
         }
       });
 
-      // 點卡片外關閉面板（簡單版）
+      // 點畫面空白處關閉面板
       document.addEventListener("click", (e) => {
-        if (
-          !e.target.closest(".card") ||
-          (e.target.closest(".card") && !e.target.closest("#toolsPanel") && !e.target.closest("#toolsBtn"))
-        ) {
+        if (!e.target.closest("#toolsPanel") && !e.target.closest("#toolsBtn")) {
           toolsPanel.classList.remove("open");
         }
-      }, true);
+      });
 
       // 主題
       const themeSelector = document.getElementById("themeSelector");
@@ -1165,7 +1182,7 @@
         });
       });
 
-      // 編輯 / 刪除（整合在鉛筆裡）
+      // 編輯 / 刪除整合在鉛筆
       document.addEventListener("click", (e) => {
         const editBtn = e.target.closest(".edit-ex-btn");
         if (editBtn) {

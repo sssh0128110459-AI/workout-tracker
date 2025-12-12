@@ -19,6 +19,7 @@
       --border: #e0dcd2;
       --input-bg: #f3eee3;
       --shadow: rgba(0, 0, 0, 0.06);
+      --row-bg: rgba(0, 0, 0, 0.02);
     }
 
     body.dark {
@@ -31,6 +32,7 @@
       --border: #3a3a3a;
       --input-bg: #161616;
       --shadow: rgba(0, 0, 0, 0.25);
+      --row-bg: rgba(255, 255, 255, 0.03);
     }
 
     body.iceland {
@@ -43,19 +45,32 @@
       --border: #35533f;
       --input-bg: #0d1510;
       --shadow: rgba(0, 0, 0, 0.35);
+      --row-bg: rgba(255, 255, 255, 0.03);
     }
 
-    /* 宮古島藍：藍 / 綠 / 白，海水霧光感 */
+    /* =========================
+       MIYAKO BLUE (更有藍綠存在感：方案 A）
+       特色：藍綠更鮮明、白沙乾淨、按鈕更跳
+    ========================== */
     body.miyako {
-      --bg: #E8F6F7;           /* 白沙＋淺海藍 */
-      --card: #FFFFFF;        /* 乾淨白 */
-      --text: #0F3A40;        /* 深海藍綠 */
-      --subtext: #5F8E94;     /* 灰藍綠 */
-      --accent: #3FB6C6;      /* 宮古海水藍 */
-      --accent-soft: #D6F0F3; /* 淡海水色 */
-      --border: #C3E4E8;      /* 海霧邊框 */
-      --input-bg: #F2FBFC;    /* 薄海藍 */
-      --shadow: rgba(63, 182, 198, 0.18);
+      --bg: #D9F7F6;           /* 淺海藍綠（更有色） */
+      --card: #FFFFFF;        /* 白沙卡片 */
+      --text: #06323A;        /* 深海藍綠 */
+      --subtext: #2B6F78;     /* 海水灰藍綠 */
+      --accent: #00AFC0;      /* 宮古藍綠主色（更飽和） */
+      --accent-soft: #BFF1F2; /* 淡海水 hover */
+      --border: #93DDE3;      /* 邊框藍綠 */
+      --input-bg: #EEFEFF;    /* 乾淨淺海 */
+      --shadow: rgba(0, 175, 192, 0.22);
+      --row-bg: rgba(0, 175, 192, 0.07);
+    }
+
+    /* 宮古島背景「海水光暈」（只對 miyako） */
+    body.miyako {
+      background:
+        radial-gradient(1200px 600px at 20% 0%, rgba(0,175,192,0.20), transparent 60%),
+        radial-gradient(900px 500px at 90% 20%, rgba(46,196,182,0.16), transparent 55%),
+        var(--bg);
     }
 
     /* =========================
@@ -83,7 +98,7 @@
     h1 {
       margin: 0;
       font-size: 20px;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0.5px;
     }
 
@@ -99,7 +114,7 @@
       padding: 12px 14px;
       border-radius: 14px;
       border: 1px solid var(--border);
-      box-shadow: 0 8px 22px var(--shadow);
+      box-shadow: 0 12px 26px var(--shadow);
     }
 
     .topbar {
@@ -112,13 +127,7 @@
 
     .topbar-title {
       font-size: 16px;
-      font-weight: 700;
-    }
-
-    .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-weight: 800;
     }
 
     .btn-mini {
@@ -133,7 +142,7 @@
     .btn-mini:hover { background: var(--accent-soft); }
 
     /* =========================
-       TOOLS PANEL
+       TOOLS PANEL (⋯)
     ========================== */
     .tools-panel {
       position: absolute;
@@ -163,7 +172,7 @@
 
     .tools-title {
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--subtext);
       margin-bottom: 6px;
     }
@@ -190,12 +199,12 @@
       border: none;
       padding: 10px 12px;
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
       background: var(--accent);
       color: #fff;
     }
-    .btn-primary:hover { filter: brightness(1.05); }
+    .btn-primary:hover { filter: brightness(1.04); }
 
     .history-row {
       display: flex;
@@ -212,7 +221,7 @@
       border-radius: 10px;
       padding: 8px;
       background: rgba(0,0,0,0.02);
-      max-height: 170px;
+      max-height: 180px;
       overflow-y: auto;
       font-size: 12px;
     }
@@ -225,8 +234,7 @@
       border-bottom: 1px dashed var(--border);
     }
     .history-item:last-child { border-bottom: none; }
-
-    .history-date { font-weight: 700; }
+    .history-date { font-weight: 800; }
     .history-meta { color: var(--subtext); text-align: right; }
 
     /* =========================
@@ -238,6 +246,10 @@
       overflow: hidden;
       margin-bottom: 10px;
       background: linear-gradient(to bottom, rgba(0,0,0,0.02), transparent);
+    }
+
+    body.miyako .group {
+      background: linear-gradient(to bottom, rgba(0,175,192,0.10), transparent);
     }
 
     .group-header {
@@ -258,11 +270,11 @@
 
     .group-name {
       font-size: 15px;
-      font-weight: 800;
+      font-weight: 900;
       white-space: nowrap;
     }
 
-    /* 只留：最近一次時間 */
+    /* 只留最近一次紀錄日期 */
     .group-last {
       font-size: 11px;
       color: var(--subtext);
@@ -286,14 +298,9 @@
     .group.open .group-body { display: block; }
 
     /* =========================
-       ROW GRID (Perfect alignment)
+       GRID ALIGNMENT (핵심：對齊＆單位清楚)
+       columns: handle | name | weight | reps | sets | action
     ========================== */
-    /* Grid columns:
-       - handle: 24px
-       - name:   1.6fr
-       - w/r/s:  1fr 1fr 1fr
-       - action: 40px
-    */
     .grid-header,
     .exercise-row {
       display: grid;
@@ -312,7 +319,7 @@
 
     .grid-header .h {
       text-align: center;
-      font-weight: 700;
+      font-weight: 900;
     }
     .grid-header .h-name {
       text-align: left;
@@ -321,8 +328,8 @@
 
     .exercise-row {
       padding: 8px 6px;
-      border-radius: 10px;
-      background: rgba(0,0,0,0.02);
+      border-radius: 12px;
+      background: var(--row-bg);
       border: 1px solid transparent;
       margin-bottom: 8px;
     }
@@ -344,7 +351,7 @@
 
     .ex-title {
       font-size: 14px;
-      font-weight: 650;
+      font-weight: 800;
       line-height: 1.2;
     }
     .ex-muscle {
@@ -356,12 +363,13 @@
     .cell input {
       width: 100%;
       padding: 8px 8px;
-      border-radius: 10px;
+      border-radius: 12px;
       border: 1px solid var(--border);
       background: var(--input-bg);
       color: var(--text);
       font-size: 13px;
       text-align: center;
+      outline: none;
     }
     .cell input::placeholder { color: var(--subtext); }
 
@@ -374,7 +382,7 @@
     .icon-btn {
       width: 34px;
       height: 34px;
-      border-radius: 10px;
+      border-radius: 12px;
       border: 1px solid var(--border);
       background: var(--card);
       color: var(--subtext);
@@ -384,6 +392,7 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      font-weight: 900;
     }
     .icon-btn:hover { background: var(--accent-soft); }
 
@@ -397,7 +406,7 @@
       color: var(--text);
       cursor: pointer;
       font-size: 13px;
-      font-weight: 650;
+      font-weight: 850;
     }
     .add-btn:hover { background: var(--accent-soft); }
 
@@ -413,10 +422,11 @@
       .grid-header,
       .exercise-row {
         column-gap: 8px;
-        grid-template-columns: 24px 1.2fr 0.9fr 0.9fr 0.9fr 40px;
+        grid-template-columns: 22px 1.2fr 0.9fr 0.9fr 0.9fr 38px;
       }
       .ex-title { font-size: 13px; }
-      .cell input { padding: 7px 6px; }
+      .cell input { padding: 7px 6px; border-radius: 11px; }
+      .icon-btn { width: 32px; height: 32px; border-radius: 11px; }
     }
   </style>
 </head>
@@ -430,9 +440,7 @@
     <section class="card" id="appCard">
       <div class="topbar">
         <div class="topbar-title">訓練項目</div>
-        <div class="topbar-right">
-          <button class="btn-mini" id="toolsBtn">⋯</button>
-        </div>
+        <button class="btn-mini" id="toolsBtn">⋯</button>
       </div>
 
       <!-- Tools Panel -->
@@ -477,10 +485,14 @@
 
   <script>
     /*******************************
-     * Storage Schema (Single Key)
+     * Storage Keys
      *******************************/
-    const STORAGE_KEY = "fitness_workouts_v1";
+    const STORAGE_KEY = "fitness_workouts_v1"; // sessions
+    const UI_KEY = "fitness_ui_v1";           // exercise library/order per group
 
+    /*******************************
+     * Date helpers
+     *******************************/
     function todayStr() {
       const d = new Date();
       const y = d.getFullYear();
@@ -489,6 +501,9 @@
       return `${y}-${m}-${day}`;
     }
 
+    /*******************************
+     * Storage: sessions
+     *******************************/
     function loadAllSessions() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
@@ -502,6 +517,9 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
     }
 
+    /*******************************
+     * Status
+     *******************************/
     function setStatus(msg, type) {
       const el = document.getElementById("status");
       el.textContent = msg || "";
@@ -511,7 +529,7 @@
     }
 
     /*******************************
-     * Default exercise library
+     * Default groups/exercises
      *******************************/
     const DEFAULT_GROUPS = [
       {
@@ -551,16 +569,13 @@
           { name: "跑步機", muscle: "心肺 / 下肢" },
           { name: "飛輪車", muscle: "腿部 / 心肺" },
           { name: "跳繩", muscle: "小腿 / 心肺" }
-        ],
-        cardioMode: true
+        ]
       }
     ];
 
     /*******************************
-     * UI State: exercise definitions (order + custom)
+     * Storage: UI (exercise list + order)
      *******************************/
-    const UI_KEY = "fitness_ui_v1";
-
     function loadUI() {
       try {
         const raw = localStorage.getItem(UI_KEY);
@@ -596,36 +611,13 @@
     function latestSessionDate() {
       const all = loadAllSessions();
       if (!all.length) return null;
-      all.sort((a,b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+      all.sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
       return all[all.length - 1].date;
     }
 
     function findSession(dateStr) {
       const all = loadAllSessions();
       return all.find(s => s.date === dateStr) || null;
-    }
-
-    function collectRecordsFromUI() {
-      const records = [];
-      document.querySelectorAll(".exercise-row").forEach(row => {
-        const group = row.getAttribute("data-group");
-        const name = row.getAttribute("data-name");
-        const muscle = row.getAttribute("data-muscle") || "";
-
-        const w = row.querySelector(".in-weight").value;
-        const r = row.querySelector(".in-reps").value;
-        const s = row.querySelector(".in-sets").value;
-
-        if (w || r || s) {
-          records.push({
-            group, name, muscle,
-            weight: w ? Number(w) : null,
-            reps: r ? Number(r) : null,
-            sets: s ? Number(s) : null
-          });
-        }
-      });
-      return records;
     }
 
     function clearInputs() {
@@ -651,6 +643,29 @@
       });
     }
 
+    function collectRecordsFromUI() {
+      const records = [];
+      document.querySelectorAll(".exercise-row").forEach(row => {
+        const group = row.getAttribute("data-group");
+        const name = row.getAttribute("data-name");
+        const muscle = row.getAttribute("data-muscle") || "";
+
+        const w = row.querySelector(".in-weight").value;
+        const r = row.querySelector(".in-reps").value;
+        const s = row.querySelector(".in-sets").value;
+
+        if (w || r || s) {
+          records.push({
+            group, name, muscle,
+            weight: w ? Number(w) : null,
+            reps: r ? Number(r) : null,
+            sets: s ? Number(s) : null
+          });
+        }
+      });
+      return records;
+    }
+
     function groupLastDate(groupName) {
       const all = loadAllSessions();
       if (!all.length) return null;
@@ -673,12 +688,10 @@
       const current = select.value;
 
       const set = new Set();
-      // UI exercises
       uiGroups.forEach(g => g.exercises.forEach(ex => set.add(ex.name)));
-      // saved exercises
       loadAllSessions().forEach(sess => sess.records?.forEach(r => set.add(r.name)));
 
-      const names = Array.from(set).sort((a,b) => a.localeCompare(b, "zh-Hant"));
+      const names = Array.from(set).sort((a, b) => a.localeCompare(b, "zh-Hant"));
       select.innerHTML = `<option value="">請選擇</option>`;
       names.forEach(n => {
         const opt = document.createElement("option");
@@ -698,7 +711,7 @@
 
     function showHistoryForExercise(name) {
       const container = document.getElementById("historyList");
-      const all = loadAllSessions().slice().sort((a,b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+      const all = loadAllSessions().slice().sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
 
       const rows = [];
       all.forEach(sess => {
@@ -727,7 +740,7 @@
     }
 
     /*******************************
-     * Drag and drop per group
+     * Drag & Drop (within group)
      *******************************/
     function enableDragWithinGroup(groupBodyEl, groupName) {
       let draggingEl = null;
@@ -747,8 +760,6 @@
         const row = e.target.closest(".exercise-row");
         if (row) row.classList.remove("dragging");
         draggingEl = null;
-
-        // persist order back to uiGroups
         persistGroupOrderFromDOM(groupName, groupBodyEl);
       });
 
@@ -791,81 +802,17 @@
 
       const map = new Map(group.exercises.map(ex => [ex.name, ex]));
       const newArr = [];
-      orderedNames.forEach(n => {
-        if (map.has(n)) newArr.push(map.get(n));
-      });
+      orderedNames.forEach(n => { if (map.has(n)) newArr.push(map.get(n)); });
 
-      // include any missing (safety)
-      group.exercises.forEach(ex => {
-        if (!orderedNames.includes(ex.name)) newArr.push(ex);
-      });
+      group.exercises.forEach(ex => { if (!orderedNames.includes(ex.name)) newArr.push(ex); });
 
       group.exercises = newArr;
       saveUI(uiGroups);
     }
 
     /*******************************
-     * Build UI
+     * Render
      *******************************/
-    function renderApp() {
-      const container = document.getElementById("groupsContainer");
-      container.innerHTML = "";
-
-      uiGroups.forEach(g => {
-        const last = groupLastDate(g.group);
-        const groupEl = document.createElement("div");
-        groupEl.className = "group";
-        groupEl.setAttribute("data-group", g.group);
-
-        groupEl.innerHTML = `
-          <div class="group-header">
-            <div class="group-header-left">
-              <div class="group-name">${g.group}</div>
-              <div class="group-last">${last ? last : "尚無紀錄"}</div>
-            </div>
-            <div class="group-toggle">▶</div>
-          </div>
-
-          <div class="group-body">
-            <div class="grid-header">
-              <div></div>
-              <div class="h h-name">動作</div>
-              <div class="h">重量 kg</div>
-              <div class="h">次數</div>
-              <div class="h">組數</div>
-              <div></div>
-            </div>
-
-            ${g.exercises.map(ex => exerciseRowHTML(g.group, ex)).join("")}
-
-            <button class="add-btn" data-group="${g.group}">＋ 新增動作</button>
-          </div>
-        `;
-
-        container.appendChild(groupEl);
-
-        // toggle
-        const header = groupEl.querySelector(".group-header");
-        header.addEventListener("click", () => {
-          groupEl.classList.toggle("open");
-        });
-
-        // drag enabled within group body
-        enableDragWithinGroup(groupEl.querySelector(".group-body"), g.group);
-      });
-
-      // load latest session into UI
-      const lastDate = latestSessionDate();
-      if (lastDate) {
-        loadSessionToUI(lastDate);
-        setStatus("已載入最近一次訓練紀錄：" + lastDate, "ok");
-      } else {
-        setStatus("尚未有訓練紀錄，填寫後按右上角 ⋯ → 儲存。", "warn");
-      }
-
-      rebuildHistoryExerciseOptions();
-    }
-
     function exerciseRowHTML(groupName, ex) {
       return `
         <div class="exercise-row" draggable="true"
@@ -890,8 +837,62 @@
       `;
     }
 
+    function renderApp() {
+      const container = document.getElementById("groupsContainer");
+      container.innerHTML = "";
+
+      uiGroups.forEach(g => {
+        const last = groupLastDate(g.group);
+        const groupEl = document.createElement("div");
+        groupEl.className = "group";
+        groupEl.setAttribute("data-group", g.group);
+
+        groupEl.innerHTML = `
+          <div class="group-header">
+            <div class="group-header-left">
+              <div class="group-name">${escapeHTML(g.group)}</div>
+              <div class="group-last">${last ? escapeHTML(last) : "尚無紀錄"}</div>
+            </div>
+            <div class="group-toggle">▶</div>
+          </div>
+
+          <div class="group-body">
+            <div class="grid-header">
+              <div></div>
+              <div class="h h-name">動作</div>
+              <div class="h">重量 kg</div>
+              <div class="h">次數</div>
+              <div class="h">組數</div>
+              <div></div>
+            </div>
+
+            ${g.exercises.map(ex => exerciseRowHTML(g.group, ex)).join("")}
+
+            <button class="add-btn" data-group="${escapeAttr(g.group)}">＋ 新增動作</button>
+          </div>
+        `;
+
+        container.appendChild(groupEl);
+
+        const header = groupEl.querySelector(".group-header");
+        header.addEventListener("click", () => groupEl.classList.toggle("open"));
+
+        enableDragWithinGroup(groupEl.querySelector(".group-body"), g.group);
+      });
+
+      const lastDate = latestSessionDate();
+      if (lastDate) {
+        loadSessionToUI(lastDate);
+        setStatus("已載入最近一次訓練紀錄：" + lastDate, "ok");
+      } else {
+        setStatus("尚未有訓練紀錄：填寫後按右上角 ⋯ → 儲存。", "warn");
+      }
+
+      rebuildHistoryExerciseOptions();
+    }
+
     /*******************************
-     * Actions (Add / Edit / Delete)
+     * Add / Edit / Delete
      *******************************/
     function addExercise(groupName) {
       const name = prompt(`新增「${groupName}」動作名稱：`);
@@ -902,9 +903,7 @@
       const group = uiGroups.find(g => g.group === groupName);
       if (!group) return;
 
-      // prevent duplicate names within same group
-      const exists = group.exercises.some(ex => ex.name === name);
-      if (exists) {
+      if (group.exercises.some(ex => ex.name === name)) {
         alert("此肌群已存在同名動作。");
         return;
       }
@@ -940,18 +939,16 @@
         if (!newName) return;
         const newMuscle = prompt("主要肌群（可留白）：", ex.muscle || "") || "";
 
-        // handle rename duplicates
         if (newName !== ex.name && group.exercises.some(x => x.name === newName)) {
           alert("此肌群已存在同名動作。");
           return;
         }
 
-        // update UI exercise definition
+        // Update UI exercise library
         ex.name = newName;
         ex.muscle = newMuscle;
 
-        // also update historical records names (optional but practical)
-        // to keep history connected after rename
+        // Keep history connected after rename
         const sessions = loadAllSessions();
         sessions.forEach(sess => {
           sess.records?.forEach(r => {
@@ -1006,22 +1003,20 @@
         "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
       }[s]));
     }
-
     function escapeAttr(str) {
       return escapeHTML(str).replace(/"/g, "&quot;");
     }
 
-    // for querySelector attribute exact match: escape special chars
+    // minimal escape for attribute selectors
     function cssEscape(str) {
-      // minimal escape for quotes/backslashes; enough for typical names
       return String(str).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
     }
 
     /*******************************
-     * Events
+     * Init & Events
      *******************************/
     document.addEventListener("DOMContentLoaded", () => {
-      // Theme init
+      // Theme init (預設 miyako)
       const themeSelector = document.getElementById("themeSelector");
       const savedTheme = localStorage.getItem("workoutTheme") || "miyako";
       themeSelector.value = savedTheme;
@@ -1046,7 +1041,7 @@
         }
       });
 
-      // Save
+      // Save button
       document.getElementById("saveBtn").addEventListener("click", () => saveToday());
 
       // History select

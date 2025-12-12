@@ -48,37 +48,18 @@
       --row-bg: rgba(255, 255, 255, 0.03);
     }
 
-    /* =========================
-       MIYAKO BLUE (更有藍綠存在感：方案 A）
-       特色：藍綠更鮮明、白沙乾淨、按鈕更跳
-    ========================== */
+    /* 宮古島藍：更有藍綠存在感 + 白沙感 */
     body.miyako {
-      --bg: #D9F7F6;           /* 淺海藍綠（更有色） */
-      --card: #FFFFFF;        /* 白沙卡片 */
-      --text: #06323A;        /* 深海藍綠 */
-      --subtext: #2B6F78;     /* 海水灰藍綠 */
-      --accent: #00AFC0;      /* 宮古藍綠主色（更飽和） */
-      --accent-soft: #BFF1F2; /* 淡海水 hover */
-      --border: #93DDE3;      /* 邊框藍綠 */
-      --input-bg: #EEFEFF;    /* 乾淨淺海 */
+      --bg: #D9F7F6;
+      --card: #FFFFFF;
+      --text: #06323A;
+      --subtext: #2B6F78;
+      --accent: #00AFC0;
+      --accent-soft: #BFF1F2;
+      --border: #93DDE3;
+      --input-bg: #EEFEFF;
       --shadow: rgba(0, 175, 192, 0.22);
       --row-bg: rgba(0, 175, 192, 0.07);
-    }
-
-    /* 宮古島背景「海水光暈」（只對 miyako） */
-    body.miyako {
-      background:
-        radial-gradient(1200px 600px at 20% 0%, rgba(0,175,192,0.20), transparent 60%),
-        radial-gradient(900px 500px at 90% 20%, rgba(46,196,182,0.16), transparent 55%),
-        var(--bg);
-    }
-
-    /* =========================
-       BASE
-    ========================== */
-    * {
-      box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
     }
 
     body {
@@ -86,6 +67,15 @@
       background: var(--bg);
       color: var(--text);
       transition: background 0.2s ease, color 0.2s ease;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    }
+
+    /* 宮古島背景光暈 */
+    body.miyako {
+      background:
+        radial-gradient(1200px 600px at 20% 0%, rgba(0,175,192,0.20), transparent 60%),
+        radial-gradient(900px 500px at 90% 20%, rgba(46,196,182,0.16), transparent 55%),
+        var(--bg);
     }
 
     header {
@@ -96,11 +86,11 @@
     }
 
     h1 {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 600;      /* ← 關鍵 */
-  letter-spacing: 0.3px; /* 稍微收斂 */
-}
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600; /* 你說太粗：這裡已降重 */
+      letter-spacing: 0.3px;
+    }
 
     main {
       max-width: 980px;
@@ -117,6 +107,8 @@
       box-shadow: 0 12px 26px var(--shadow);
     }
 
+    .card + .card { margin-top: 12px; }
+
     .topbar {
       display: flex;
       align-items: center;
@@ -126,10 +118,9 @@
     }
 
     .topbar-title {
-  font-size: 16px;
-  font-weight: 600;
-}
-
+      font-size: 16px;
+      font-weight: 600; /* 降重 */
+    }
 
     .btn-mini {
       border-radius: 999px;
@@ -141,6 +132,89 @@
       color: var(--text);
     }
     .btn-mini:hover { background: var(--accent-soft); }
+
+    /* =========================
+       TIMER UI
+    ========================== */
+    #timerCard { margin-top: 0; }
+
+    .timer-top{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      margin-bottom:10px;
+    }
+
+    .timer-label{
+      font-size:12px;
+      color:var(--subtext);
+      font-weight:600;
+    }
+
+    .timer-clock{
+      font-size:34px;
+      font-weight:500;
+      letter-spacing:1px;
+      line-height:1.1;
+    }
+
+    .timer-controls{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap:10px;
+      margin-bottom:10px;
+    }
+
+    .timer-btn{
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: var(--accent);
+      color:#fff;
+      padding:10px 12px;
+      font-weight:800;
+      cursor:pointer;
+    }
+    .timer-btn:hover{ filter:brightness(1.04); }
+
+    .timer-btn.ghost{
+      background: transparent;
+      color: var(--text);
+      border-style: solid;
+    }
+    .timer-btn.ghost:hover{ background: var(--accent-soft); }
+
+    .set-area{
+      border-top:1px dashed var(--border);
+      padding-top:10px;
+    }
+
+    .set-title{
+      font-size:12px;
+      color:var(--subtext);
+      font-weight:700;
+      margin-bottom:6px;
+    }
+
+    .set-list{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .set-chip{
+      border:1px solid var(--border);
+      background: var(--accent-soft);
+      color: var(--text);
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    @media (max-width:560px){
+      .timer-clock{ font-size:30px; }
+      .timer-btn{ padding:9px 10px; }
+    }
 
     /* =========================
        TOOLS PANEL (⋯)
@@ -173,7 +247,7 @@
 
     .tools-title {
       font-size: 12px;
-      font-weight: 800;
+      font-weight: 700;
       color: var(--subtext);
       margin-bottom: 6px;
     }
@@ -270,12 +344,11 @@
     }
 
     .group-name {
-      font-size: 14.5px;
-      font-weight: 600;
-      white-space: 0.2px;
+      font-size: 15px;
+      font-weight: 650; /* 降重 */
+      white-space: nowrap;
     }
 
-    /* 只留最近一次紀錄日期 */
     .group-last {
       font-size: 11px;
       color: var(--subtext);
@@ -292,15 +365,14 @@
     .group.open .group-toggle { transform: rotate(90deg); }
 
     .group-body {
-      display: none;
       padding: 8px 12px 12px;
       border-top: 1px solid var(--border);
+      display: none;
     }
     .group.open .group-body { display: block; }
 
     /* =========================
-       GRID ALIGNMENT (핵심：對齊＆單位清楚)
-       columns: handle | name | weight | reps | sets | action
+       GRID ALIGNMENT
     ========================== */
     .grid-header,
     .exercise-row {
@@ -320,7 +392,7 @@
 
     .grid-header .h {
       text-align: center;
-      font-weight: 900;
+      font-weight: 700;
     }
     .grid-header .h-name {
       text-align: left;
@@ -334,25 +406,20 @@
       border: 1px solid transparent;
       margin-bottom: 8px;
     }
-    .exercise-row:last-child { margin-bottom: 0; }
-
-    .exercise-row.dragging {
-      opacity: 0.6;
-      border-color: var(--border);
-      border-style: dashed;
-    }
 
     .handle {
       font-size: 14px;
       opacity: 0.65;
       user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
       cursor: grab;
       text-align: center;
     }
 
     .ex-title {
       font-size: 14px;
-      font-weight: 800;
+      font-weight: 700;
       line-height: 1.2;
     }
     .ex-muscle {
@@ -372,7 +439,6 @@
       text-align: center;
       outline: none;
     }
-    .cell input::placeholder { color: var(--subtext); }
 
     .action {
       display: flex;
@@ -389,7 +455,6 @@
       color: var(--subtext);
       cursor: pointer;
       font-size: 13px;
-      line-height: 1;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -407,7 +472,7 @@
       color: var(--text);
       cursor: pointer;
       font-size: 13px;
-      font-weight: 850;
+      font-weight: 800;
     }
     .add-btn:hover { background: var(--accent-soft); }
 
@@ -438,6 +503,26 @@
   </header>
 
   <main>
+    <!-- Timer Card -->
+    <section class="card" id="timerCard">
+      <div class="timer-top">
+        <div class="timer-label" id="timerMode">訓練計時</div>
+        <div class="timer-clock" id="timerClock">00:00</div>
+      </div>
+
+      <div class="timer-controls">
+        <button class="timer-btn" id="timerStartBtn">開始</button>
+        <button class="timer-btn ghost" id="timerResetBtn">重置</button>
+        <button class="timer-btn" id="timerRestBtn">休息</button>
+      </div>
+
+      <div class="set-area">
+        <div class="set-title">組數</div>
+        <div class="set-list" id="setList"></div>
+      </div>
+    </section>
+
+    <!-- Workout Card -->
     <section class="card" id="appCard">
       <div class="topbar">
         <div class="topbar-title">訓練項目</div>
@@ -477,12 +562,13 @@
         </div>
       </div>
 
-      <!-- Groups -->
       <div id="groupsContainer"></div>
-
       <div id="status" class="status"></div>
     </section>
   </main>
+
+  <!-- SortableJS (手機拖曳必備) -->
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 
   <script>
     /*******************************
@@ -604,6 +690,107 @@
       if (theme === "iceland") document.body.classList.add("iceland");
       if (theme === "miyako") document.body.classList.add("miyako");
       localStorage.setItem("workoutTheme", theme);
+    }
+
+    /*******************************
+     * Timer + Set Counter
+     *******************************/
+    let timerMode = "workout";
+    let workoutRunning = false;
+    let restRunning = false;
+
+    let workoutSeconds = 0;
+    let restSecondsLeft = 90;
+
+    let timerInterval = null;
+    let setCount = 0;
+
+    function formatClock(sec) {
+      const s = Math.max(0, Math.floor(sec));
+      const mm = String(Math.floor(s / 60)).padStart(2, "0");
+      const ss = String(s % 60).padStart(2, "0");
+      return `${mm}:${ss}`;
+    }
+
+    function renderTimer() {
+      const modeEl = document.getElementById("timerMode");
+      const clockEl = document.getElementById("timerClock");
+
+      if (timerMode === "rest") {
+        modeEl.textContent = "休息倒數";
+        clockEl.textContent = formatClock(restSecondsLeft);
+      } else {
+        modeEl.textContent = "訓練計時";
+        clockEl.textContent = formatClock(workoutSeconds);
+      }
+    }
+
+    function startIntervalsIfNeeded() {
+      if (timerInterval) return;
+
+      timerInterval = setInterval(() => {
+        if (workoutRunning) workoutSeconds += 1;
+
+        if (restRunning) {
+          restSecondsLeft -= 1;
+          if (restSecondsLeft <= 0) {
+            restSecondsLeft = 0;
+            restRunning = false;
+            timerMode = "workout";
+            renderTimer();
+            beep();
+          }
+        }
+        renderTimer();
+      }, 1000);
+    }
+
+    function stopAllIntervals() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    function beep() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.connect(g);
+        g.connect(ctx.destination);
+        o.frequency.value = 880;
+        g.gain.value = 0.05;
+        o.start();
+        setTimeout(() => {
+          o.stop();
+          ctx.close();
+        }, 160);
+      } catch {}
+    }
+
+    function appendSetChip(n) {
+      const list = document.getElementById("setList");
+      const chip = document.createElement("div");
+      chip.className = "set-chip";
+      chip.textContent = `第 ${n} 組`;
+      list.appendChild(chip);
+    }
+
+    function resetSetsAndTimer() {
+      workoutRunning = false;
+      restRunning = false;
+      timerMode = "workout";
+      stopAllIntervals();
+
+      workoutSeconds = 0;
+      restSecondsLeft = 90;
+
+      setCount = 0;
+      document.getElementById("setList").innerHTML = "";
+
+      document.getElementById("timerStartBtn").textContent = "開始";
+      renderTimer();
     }
 
     /*******************************
@@ -741,57 +928,19 @@
     }
 
     /*******************************
-     * Drag & Drop (within group)
+     * Drag & Drop (SortableJS)
      *******************************/
     function enableDragWithinGroup(groupBodyEl, groupName) {
-      let draggingEl = null;
-
-      groupBodyEl.addEventListener("dragstart", (e) => {
-        const handle = e.target.closest(".handle");
-        if (!handle) {
-          e.preventDefault();
-          return;
-        }
-        const row = handle.closest(".exercise-row");
-        draggingEl = row;
-        row.classList.add("dragging");
-      });
-
-      groupBodyEl.addEventListener("dragend", (e) => {
-        const row = e.target.closest(".exercise-row");
-        if (row) row.classList.remove("dragging");
-        draggingEl = null;
-        persistGroupOrderFromDOM(groupName, groupBodyEl);
-      });
-
-      groupBodyEl.addEventListener("dragover", (e) => {
-        e.preventDefault();
-        if (!draggingEl) return;
-
-        const after = getDragAfterElement(groupBodyEl, e.clientY);
-        const addBtn = groupBodyEl.querySelector(".add-btn");
-
-        if (!after) {
-          groupBodyEl.insertBefore(draggingEl, addBtn);
-        } else {
-          groupBodyEl.insertBefore(draggingEl, after);
+      new Sortable(groupBodyEl, {
+        animation: 150,
+        handle: ".handle",
+        draggable: ".exercise-row",
+        filter: ".add-btn, input, button, select",
+        preventOnFilter: true,
+        onEnd: () => {
+          persistGroupOrderFromDOM(groupName, groupBodyEl);
         }
       });
-    }
-
-    function getDragAfterElement(container, y) {
-      const candidates = [...container.querySelectorAll(".exercise-row:not(.dragging)")];
-      let closest = { offset: Number.NEGATIVE_INFINITY, element: null };
-
-      candidates.forEach(child => {
-        const box = child.getBoundingClientRect();
-        const offset = y - box.top - box.height / 2;
-        if (offset < 0 && offset > closest.offset) {
-          closest = { offset, element: child };
-        }
-      });
-
-      return closest.element;
     }
 
     function persistGroupOrderFromDOM(groupName, groupBodyEl) {
@@ -804,7 +953,6 @@
       const map = new Map(group.exercises.map(ex => [ex.name, ex]));
       const newArr = [];
       orderedNames.forEach(n => { if (map.has(n)) newArr.push(map.get(n)); });
-
       group.exercises.forEach(ex => { if (!orderedNames.includes(ex.name)) newArr.push(ex); });
 
       group.exercises = newArr;
@@ -816,7 +964,7 @@
      *******************************/
     function exerciseRowHTML(groupName, ex) {
       return `
-        <div class="exercise-row" draggable="true"
+        <div class="exercise-row"
              data-group="${escapeAttr(groupName)}"
              data-name="${escapeAttr(ex.name)}"
              data-muscle="${escapeAttr(ex.muscle || "")}">
@@ -867,7 +1015,9 @@
               <div></div>
             </div>
 
-            ${g.exercises.map(ex => exerciseRowHTML(g.group, ex)).join("")}
+            <div class="rows-wrap">
+              ${g.exercises.map(ex => exerciseRowHTML(g.group, ex)).join("")}
+            </div>
 
             <button class="add-btn" data-group="${escapeAttr(g.group)}">＋ 新增動作</button>
           </div>
@@ -878,7 +1028,8 @@
         const header = groupEl.querySelector(".group-header");
         header.addEventListener("click", () => groupEl.classList.toggle("open"));
 
-        enableDragWithinGroup(groupEl.querySelector(".group-body"), g.group);
+        const bodyEl = groupEl.querySelector(".group-body");
+        enableDragWithinGroup(bodyEl, g.group);
       });
 
       const lastDate = latestSessionDate();
@@ -945,11 +1096,10 @@
           return;
         }
 
-        // Update UI exercise library
         ex.name = newName;
         ex.muscle = newMuscle;
 
-        // Keep history connected after rename
+        // rename history records to keep linkage
         const sessions = loadAllSessions();
         sessions.forEach(sess => {
           sess.records?.forEach(r => {
@@ -1007,8 +1157,6 @@
     function escapeAttr(str) {
       return escapeHTML(str).replace(/"/g, "&quot;");
     }
-
-    // minimal escape for attribute selectors
     function cssEscape(str) {
       return String(str).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
     }
@@ -1024,7 +1172,7 @@
       applyTheme(savedTheme);
       themeSelector.addEventListener("change", () => applyTheme(themeSelector.value));
 
-      // Tools panel open/close
+      // Tools panel
       const toolsBtn = document.getElementById("toolsBtn");
       const toolsPanel = document.getElementById("toolsPanel");
 
@@ -1042,7 +1190,7 @@
         }
       });
 
-      // Save button
+      // Save
       document.getElementById("saveBtn").addEventListener("click", () => saveToday());
 
       // History select
@@ -1073,6 +1221,40 @@
           editOrDeleteExercise(groupName, exName);
           return;
         }
+      });
+
+      // Timer bindings
+      const startBtn = document.getElementById("timerStartBtn");
+      const restBtn = document.getElementById("timerRestBtn");
+      const resetBtn = document.getElementById("timerResetBtn");
+
+      renderTimer();
+
+      startBtn.addEventListener("click", () => {
+        setCount += 1;
+        appendSetChip(setCount);
+
+        timerMode = "workout";
+        restRunning = false;
+        workoutRunning = true;
+
+        startIntervalsIfNeeded();
+        renderTimer();
+      });
+
+      restBtn.addEventListener("click", () => {
+        workoutRunning = false;
+
+        restSecondsLeft = 90; // 休息秒數可改
+        restRunning = true;
+        timerMode = "rest";
+
+        startIntervalsIfNeeded();
+        renderTimer();
+      });
+
+      resetBtn.addEventListener("click", () => {
+        resetSetsAndTimer();
       });
 
       renderApp();

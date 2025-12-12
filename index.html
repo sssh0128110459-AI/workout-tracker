@@ -18,6 +18,7 @@
       --accent-soft: #efe3c7;
       --border: #e0dcd2;
       --input-bg: #f3eee3;
+      --shadow: rgba(0, 0, 0, 0.06);
     }
 
     body.dark {
@@ -29,6 +30,7 @@
       --accent-soft: #2b2216;
       --border: #3a3a3a;
       --input-bg: #161616;
+      --shadow: rgba(0, 0, 0, 0.25);
     }
 
     body.iceland {
@@ -40,6 +42,20 @@
       --accent-soft: #12251a;
       --border: #35533f;
       --input-bg: #0d1510;
+      --shadow: rgba(0, 0, 0, 0.35);
+    }
+
+    /* 宮古島藍：藍 / 綠 / 白，海水霧光感 */
+    body.miyako {
+      --bg: #E8F6F7;           /* 白沙＋淺海藍 */
+      --card: #FFFFFF;        /* 乾淨白 */
+      --text: #0F3A40;        /* 深海藍綠 */
+      --subtext: #5F8E94;     /* 灰藍綠 */
+      --accent: #3FB6C6;      /* 宮古海水藍 */
+      --accent-soft: #D6F0F3; /* 淡海水色 */
+      --border: #C3E4E8;      /* 海霧邊框 */
+      --input-bg: #F2FBFC;    /* 薄海藍 */
+      --shadow: rgba(63, 182, 198, 0.18);
     }
 
     /* =========================
@@ -47,13 +63,11 @@
     ========================== */
     * {
       box-sizing: border-box;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
-        sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
     }
 
     body {
       margin: 0;
-      padding: 0;
       background: var(--bg);
       color: var(--text);
       transition: background 0.2s ease, color 0.2s ease;
@@ -62,17 +76,19 @@
     header {
       padding: 16px;
       display: flex;
-      justify-content: flex-start;
       align-items: center;
+      justify-content: flex-start;
     }
 
     h1 {
       margin: 0;
       font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
     }
 
     main {
-      max-width: 960px;
+      max-width: 980px;
       margin: 0 auto;
       padding: 0 16px 24px;
     }
@@ -81,782 +97,399 @@
       position: relative;
       background: var(--card);
       padding: 12px 14px;
-      margin-bottom: 14px;
-      border-radius: 12px;
+      border-radius: 14px;
       border: 1px solid var(--border);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 8px 22px var(--shadow);
     }
 
-    .section-title {
-      font-weight: 700;
-      margin-bottom: 8px;
-      font-size: 16px;
+    .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 8px;
+      margin-bottom: 10px;
     }
 
-    .section-toolbar {
+    .topbar-title {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .topbar-right {
       display: flex;
       align-items: center;
-      gap: 6px;
-    }
-
-    .section-sub-right {
-      font-size: 11px;
-      color: var(--subtext);
-      text-align: right;
-      line-height: 1.4;
+      gap: 8px;
     }
 
     .btn-mini {
       border-radius: 999px;
       border: 1px solid var(--border);
-      padding: 4px 8px;
+      padding: 6px 10px;
       font-size: 12px;
       cursor: pointer;
       background: var(--card);
       color: var(--text);
     }
+    .btn-mini:hover { background: var(--accent-soft); }
 
-    .btn-mini:hover {
-      background: var(--accent-soft);
-    }
-
-    .status-text {
-      font-size: 11px;
-      color: var(--subtext);
-      margin-top: 4px;
-    }
-
-    .status-ok {
-      color: #3fbf6b;
-    }
-
-    .status-warn {
-      color: #f0a14a;
-    }
-
-    /* 工具面板（主題 + 儲存 + 歷史） */
+    /* =========================
+       TOOLS PANEL
+    ========================== */
     .tools-panel {
       position: absolute;
-      top: 40px;
+      top: 46px;
       right: 12px;
-      width: min(320px, 80vw);
+      width: min(340px, 86vw);
       background: var(--card);
-      border-radius: 10px;
+      border-radius: 12px;
       border: 1px solid var(--border);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
-      padding: 8px 10px;
-      font-size: 11px;
+      box-shadow: 0 14px 28px var(--shadow);
+      padding: 10px 10px;
       display: none;
-      z-index: 10;
+      z-index: 20;
     }
-
-    .tools-panel.open {
-      display: block;
-    }
+    .tools-panel.open { display: block; }
 
     .tools-section {
-      margin-bottom: 6px;
-      padding-bottom: 6px;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
       border-bottom: 1px dashed var(--border);
     }
-
     .tools-section:last-child {
-      margin-bottom: 0;
       padding-bottom: 0;
+      margin-bottom: 0;
       border-bottom: none;
     }
 
     .tools-title {
-      font-weight: 600;
-      margin-bottom: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--subtext);
+      margin-bottom: 6px;
     }
 
     .tools-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 6px;
-    }
-
-    .theme-select {
-      padding: 4px 8px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--text);
-      font-size: 11px;
-    }
-
-    .btn-mini-primary {
-      border-radius: 999px;
-      border: 1px solid transparent;
-      padding: 5px 8px;
-      font-size: 11px;
-      cursor: pointer;
-      background: var(--accent);
-      color: #fff;
-      width: 100%;
-    }
-
-    .btn-mini-primary:hover {
-      filter: brightness(1.05);
-    }
-
-    /* 訓練項目群組 */
-    .group {
-      margin-bottom: 8px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: linear-gradient(
-        to bottom,
-        rgba(0, 0, 0, 0.015),
-        transparent
-      );
-    }
-
-    .group-header {
-      padding: 8px 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-    }
-
-    .group-name {
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .group-toggle {
-      font-size: 18px;
-      opacity: 0.7;
-      transition: transform 0.15s ease;
-    }
-
-    .group.open .group-toggle {
-      transform: rotate(90deg);
-    }
-
-    .sub-list {
-      display: none;
-      padding: 4px 10px 8px;
-      border-top: 1px solid var(--border);
-    }
-
-    .group.open .sub-list {
-      display: block;
-    }
-
-    /* 小標題列：重量 / 次數 / 組數 */
-    .sub-header-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
       gap: 8px;
-      padding: 4px 0 6px;
-      border-bottom: 1px solid var(--border);
-      font-size: 11px;
-      color: var(--subtext);
-    }
-
-    .sub-header-handle {
-      width: 20px;
-      padding: 0 4px;
-    }
-
-    .sub-header-main {
-      flex: 1.5;
-    }
-
-    .sub-header-inputs {
-      flex: 1.8;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      column-gap: 8px;
-      text-align: center;
-    }
-
-    .sub-header-inputs span {
-      display: block;
-      white-space: nowrap;
-    }
-
-    .sub-header-actions {
-      width: 40px;
-      text-align: center;
-      font-size: 11px;
-      color: var(--subtext);
-    }
-
-    /* 每列動作 */
-    .sub-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      padding: 6px 0;
-      border-bottom: 1px dashed var(--border);
-      cursor: grab;
-    }
-
-    .sub-row:last-child {
-      border-bottom: none;
-    }
-
-    .sub-main {
-      flex: 1.5;
-      min-width: 110px;
-    }
-
-    .sub-title {
-      font-size: 13px;
-      font-weight: 500;
-    }
-
-    .sub-muscle {
-      font-size: 11px;
-      color: var(--subtext);
-    }
-
-    .sub-inputs {
-      flex: 1.8;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      column-gap: 8px;
-      row-gap: 4px;
-    }
-
-    .sub-inputs input {
-      width: 100%;
-      padding: 4px 6px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: var(--input-bg);
-      color: var(--text);
-      font-size: 11px;
-      text-align: center;
-    }
-
-    .sub-inputs input::placeholder {
-      font-size: 11px;
-      color: var(--subtext);
-    }
-
-    .sub-handle {
-      font-size: 14px;
-      opacity: 0.6;
-      padding: 0 4px;
-      user-select: none;
-    }
-
-    .sub-actions {
-      width: 40px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .icon-btn {
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      font-size: 11px;
-      padding: 2px 4px;
-      cursor: pointer;
-      color: var(--subtext);
-    }
-
-    .icon-btn:hover {
-      background: var(--accent-soft);
-    }
-
-    .add-ex-btn {
-      margin-top: 6px;
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px dashed var(--border);
-      background: rgba(0,0,0,0.02);
-      cursor: pointer;
-    }
-
-    .add-ex-btn:hover {
-      background: var(--accent-soft);
-    }
-
-    .dragging {
-      opacity: 0.6;
-      border-style: dashed;
-    }
-
-    /* 歷史區塊（在工具面板內） */
-    .history-select-row {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      align-items: center;
-      margin-bottom: 4px;
     }
 
     select {
-      padding: 4px 8px;
+      padding: 6px 10px;
       border-radius: 999px;
       border: 1px solid var(--border);
       background: var(--card);
       color: var(--text);
-      font-size: 11px;
+      font-size: 12px;
+    }
+
+    .btn-primary {
+      width: 100%;
+      border-radius: 999px;
+      border: none;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--accent);
+      color: #fff;
+    }
+    .btn-primary:hover { filter: brightness(1.05); }
+
+    .history-row {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+      font-size: 12px;
+      color: var(--subtext);
     }
 
     .history-list {
-      font-size: 11px;
-      max-height: 140px;
-      overflow-y: auto;
-      border-radius: 6px;
       border: 1px solid var(--border);
-      padding: 4px 6px;
-      background: rgba(0, 0, 0, 0.02);
+      border-radius: 10px;
+      padding: 8px;
+      background: rgba(0,0,0,0.02);
+      max-height: 170px;
+      overflow-y: auto;
+      font-size: 12px;
     }
 
     .history-item {
       display: flex;
       justify-content: space-between;
-      padding: 3px 0;
+      gap: 8px;
+      padding: 6px 0;
       border-bottom: 1px dashed var(--border);
     }
+    .history-item:last-child { border-bottom: none; }
 
-    .history-item:last-child {
-      border-bottom: none;
+    .history-date { font-weight: 700; }
+    .history-meta { color: var(--subtext); text-align: right; }
+
+    /* =========================
+       GROUPS
+    ========================== */
+    .group {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 10px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.02), transparent);
     }
 
-    .history-date {
-      font-weight: 500;
+    .group-header {
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      gap: 10px;
     }
 
-    .history-meta {
-      text-align: right;
+    .group-header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .group-name {
+      font-size: 15px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    /* 只留：最近一次時間 */
+    .group-last {
+      font-size: 11px;
+      color: var(--subtext);
+      white-space: nowrap;
+    }
+
+    .group-toggle {
+      font-size: 18px;
+      opacity: 0.6;
+      transition: transform 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .group.open .group-toggle { transform: rotate(90deg); }
+
+    .group-body {
+      display: none;
+      padding: 8px 12px 12px;
+      border-top: 1px solid var(--border);
+    }
+    .group.open .group-body { display: block; }
+
+    /* =========================
+       ROW GRID (Perfect alignment)
+    ========================== */
+    /* Grid columns:
+       - handle: 24px
+       - name:   1.6fr
+       - w/r/s:  1fr 1fr 1fr
+       - action: 40px
+    */
+    .grid-header,
+    .exercise-row {
+      display: grid;
+      grid-template-columns: 24px 1.6fr 1fr 1fr 1fr 40px;
+      column-gap: 10px;
+      align-items: center;
+    }
+
+    .grid-header {
+      padding: 6px 6px 8px;
+      font-size: 12px;
+      color: var(--subtext);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 8px;
+    }
+
+    .grid-header .h {
+      text-align: center;
+      font-weight: 700;
+    }
+    .grid-header .h-name {
+      text-align: left;
+      padding-left: 2px;
+    }
+
+    .exercise-row {
+      padding: 8px 6px;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.02);
+      border: 1px solid transparent;
+      margin-bottom: 8px;
+    }
+    .exercise-row:last-child { margin-bottom: 0; }
+
+    .exercise-row.dragging {
+      opacity: 0.6;
+      border-color: var(--border);
+      border-style: dashed;
+    }
+
+    .handle {
+      font-size: 14px;
+      opacity: 0.65;
+      user-select: none;
+      cursor: grab;
+      text-align: center;
+    }
+
+    .ex-title {
+      font-size: 14px;
+      font-weight: 650;
+      line-height: 1.2;
+    }
+    .ex-muscle {
+      font-size: 12px;
+      color: var(--subtext);
+      margin-top: 2px;
+    }
+
+    .cell input {
+      width: 100%;
+      padding: 8px 8px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--input-bg);
+      color: var(--text);
+      font-size: 13px;
+      text-align: center;
+    }
+    .cell input::placeholder { color: var(--subtext); }
+
+    .action {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--subtext);
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-btn:hover { background: var(--accent-soft); }
+
+    .add-btn {
+      margin-top: 6px;
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px dashed var(--border);
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 650;
+    }
+    .add-btn:hover { background: var(--accent-soft); }
+
+    .status {
+      margin-top: 8px;
+      font-size: 12px;
       color: var(--subtext);
     }
+    .status.ok { color: #2fbf6b; }
+    .status.warn { color: #f0a14a; }
 
-    @media (max-width: 600px) {
-      .section-title {
-        align-items: center;
+    @media (max-width: 560px) {
+      .grid-header,
+      .exercise-row {
+        column-gap: 8px;
+        grid-template-columns: 24px 1.2fr 0.9fr 0.9fr 0.9fr 40px;
       }
-      .sub-header-row {
-        font-size: 10px;
-      }
-      .sub-actions {
-        width: 34px;
-      }
+      .ex-title { font-size: 13px; }
+      .cell input { padding: 7px 6px; }
     }
   </style>
 </head>
+
 <body>
   <header>
     <h1>健身紀錄</h1>
   </header>
 
   <main>
-    <section class="card">
-      <div class="section-title">
-        <span>💪 訓練項目</span>
-        <div class="section-toolbar">
-          <div class="section-sub-right" id="currentDateLabel"></div>
+    <section class="card" id="appCard">
+      <div class="topbar">
+        <div class="topbar-title">訓練項目</div>
+        <div class="topbar-right">
           <button class="btn-mini" id="toolsBtn">⋯</button>
         </div>
       </div>
 
-      <!-- 工具面板：主題 + 儲存 + 歷史 -->
-      <div id="toolsPanel" class="tools-panel">
+      <!-- Tools Panel -->
+      <div class="tools-panel" id="toolsPanel" aria-hidden="true">
         <div class="tools-section">
           <div class="tools-title">主題</div>
           <div class="tools-row">
-            <span>背景顏色</span>
-            <select id="themeSelector" class="theme-select">
+            <div style="font-size:12px;color:var(--subtext);">背景顏色</div>
+            <select id="themeSelector">
               <option value="light">淺色</option>
               <option value="dark">深色</option>
               <option value="iceland">冰島苔原</option>
+              <option value="miyako">宮古島藍</option>
             </select>
           </div>
         </div>
 
         <div class="tools-section">
-          <button class="btn-mini-primary" id="saveBtn">💾 儲存今天訓練</button>
+          <button class="btn-primary" id="saveBtn">💾 儲存今天訓練</button>
         </div>
 
         <div class="tools-section">
           <div class="tools-title">歷史查詢</div>
-          <div class="history-select-row">
-            <span style="flex:1 1 auto;">選擇動作：</span>
+          <div class="history-row">
+            <div>選擇動作</div>
             <select id="historyExerciseSelect">
               <option value="">請選擇</option>
             </select>
           </div>
-          <div id="historyList" class="history-list">
-            <div style="color:var(--subtext);">
-              尚未選擇動作或尚無紀錄。
-            </div>
+          <div class="history-list" id="historyList">
+            <div style="color:var(--subtext);">尚未選擇動作或尚無紀錄。</div>
           </div>
         </div>
       </div>
 
-      <div id="groupsContainer">
-        <!--=== 胸部 ===-->
-        <div class="group" data-group="胸">
-          <div class="group-header">
-            <div class="group-name">胸部</div>
-            <div class="group-toggle">▶</div>
-          </div>
-          <div class="sub-list">
-            <div class="sub-header-row">
-              <div class="sub-header-handle"></div>
-              <div class="sub-header-main">動作</div>
-              <div class="sub-header-inputs">
-                <span>重量 kg</span>
-                <span>次數</span>
-                <span>組數</span>
-              </div>
-              <div class="sub-header-actions"></div>
-            </div>
+      <!-- Groups -->
+      <div id="groupsContainer"></div>
 
-            <div class="sub-row" draggable="true" data-name="平板啞鈴臥推">
-              <div class="sub-handle">☰</div>
-              <div class="sub-main">
-                <div class="sub-title">平板啞鈴臥推</div>
-                <div class="sub-muscle">胸大肌 / 肱三頭肌</div>
-              </div>
-              <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量">
-                <input class="reps-input" type="number" placeholder="次數">
-                <input class="sets-input" type="number" placeholder="組數">
-              </div>
-              <div class="sub-actions">
-                <button type="button" class="icon-btn edit-ex-btn">✎</button>
-              </div>
-            </div>
-
-            <div class="sub-row" draggable="true" data-name="上斜啞鈴臥推">
-              <div class="sub-handle">☰</div>
-              <div class="sub-main">
-                <div class="sub-title">上斜啞鈴臥推</div>
-                <div class="sub-muscle">上胸 / 肱三頭肌</div>
-              </div>
-              <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量">
-                <input class="reps-input" type="number" placeholder="次數">
-                <input class="sets-input" type="number" placeholder="組數">
-              </div>
-              <div class="sub-actions">
-                <button type="button" class="icon-btn edit-ex-btn">✎</button>
-              </div>
-            </div>
-
-            <div class="sub-row" draggable="true" data-name="啞鈴飛鳥">
-              <div class="sub-handle">☰</div>
-              <div class="sub-main">
-                <div class="sub-title">啞鈴飛鳥</div>
-                <div class="sub-muscle">胸大肌伸展</div>
-              </div>
-              <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量">
-                <input class="reps-input" type="number" placeholder="次數">
-                <input class="sets-input" type="number" placeholder="組數">
-              </div>
-              <div class="sub-actions">
-                <button type="button" class="icon-btn edit-ex-btn">✎</button>
-              </div>
-            </div>
-
-            <button class="add-ex-btn" data-group="胸">＋ 新增胸部動作</button>
-          </div>
-        </div>
-
-        <!--=== 背部 ===-->
-        <div class="group" data-group="背">
-          <div class="group-header">
-            <div class="group-name">背部</div>
-            <div class="group-toggle">▶</div>
-          </div>
-          <div class="sub-list">
-            <div class="sub-header-row">
-              <div class="sub-header-handle"></div>
-              <div class="sub-header-main">動作</div>
-              <div class="sub-header-inputs">
-                <span>重量 kg</span>
-                <span>次數</span>
-                <span>組數</span>
-              </div>
-              <div class="sub-header-actions"></div>
-            </div>
-
-            <div class="sub-row" draggable="true" data-name="引體向上">
-              <div class="sub-handle">☰</div>
-              <div class="sub-main">
-                <div class="sub-title">引體向上</div>
-                <div class="sub-muscle">背闊肌 / 肱二頭肌</div>
-              </div>
-              <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量">
-                <input class="reps-input" type="number" placeholder="次數">
-                <input class="sets-input" type="number" placeholder="組數">
-              </div>
-              <div class="sub-actions">
-                <button type="button" class="icon-btn edit-ex-btn">✎</button>
-              </div>
-            </div>
-
-            <div class="sub-row" draggable="true" data-name="高位下拉">
-              <div class="sub-handle">☰</div>
-              <div class="sub-main">
-                <div class="sub-title">高位下拉</div>
-                <div class="sub-muscle">背闊肌</div>
-              </div>
-              <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量">
-                <input class="reps-input" type="number" placeholder="次數">
-                <input class="sets-input" type="number" placeholder="組數">
-              </div>
-              <div class="sub-actions">
-                <button type="button" class="icon-btn edit-ex-btn">✎</button>
-              </div>
-            </div>
-
-            <div class="sub-row" draggable="true" data-name="坐姿划船">
-              <div class="sub-handle">☰</div>
-              <div class="sub-main">
-                <div class="sub-title">坐姿划船</div>
-                <div class="sub-muscle">菱形肌 / 斜方肌 / 二頭</div>
-              </div>
-              <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量">
-                <input class="reps-input" type="number" placeholder="次數">
-                <input class="sets-input" type="number" placeholder="組數">
-              </div>
-              <div class="sub-actions">
-                <button type="button" class="icon-btn edit-ex-btn">✎</button>
-              </div>
-            </div>
-
-            <button class="add-ex-btn" data-group="背">＋ 新增背部動作</button>
-          </div>
-        </div>
-
-        <!--=== 腿部 ===-->
-        <div class="group" data-group="腿">
-          <div class="group-header">
-            <div class="group-name">腿部</div>
-            <div class="group-toggle">▶</div>
-          </div>
-          <div class="sub-list">
-            <div class="sub-header-row">
-              <div class="sub-header-handle"></div>
-              <div class="sub-header-main">動作</div>
-              <div class="sub-header-inputs">
-                <span>重量 kg</span>
-                <span>次數</span>
-                <span>組數</span>
-              </div>
-              <div class="sub-header-actions"></div>
-            </div>
-
-            <div class="sub-row" draggable="true" data-name="深蹲">
-              <div class="sub-handle">☰</div>
-              <div class="sub-main">
-                <div class="sub-title">深蹲</div>
-                <div class="sub-muscle">股四頭 / 臀</div>
-              </div>
-              <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量">
-                <input class="reps-input" type="number" placeholder="次數">
-                <input class="sets-input" type="number" placeholder="組數">
-              </div>
-              <div class="sub-actions">
-                <button type="button" class="icon-btn edit-ex-btn">✎</button>
-              </div>
-            </div>
-
-            <div class="sub-row" draggable="true" data-name="腿推機">
-              <div class="sub-handle">☰</div>
-              <div class="sub-main">
-                <div class="sub-title">腿推機</div>
-                <div class="sub-muscle">股四頭 / 臀</div>
-              </div>
-              <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量">
-                <input class="reps-input" type="number" placeholder="次數">
-                <input class="sets-input" type="number" placeholder="組數">
-              </div>
-              <div class="sub-actions">
-                <button type="button" class="icon-btn edit-ex-btn">✎</button>
-              </div>
-            </div>
-
-            <div class="sub-row" draggable="true" data-name="羅馬尼亞硬舉">
-              <div class="sub-handle">☰</div>
-              <div class="sub-main">
-                <div class="sub-title">羅馬尼亞硬舉</div>
-                <div class="sub-muscle">腿後肌 / 臀</div>
-              </div>
-              <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量">
-                <input class="reps-input" type="number" placeholder="次數">
-                <input class="sets-input" type="number" placeholder="組數">
-              </div>
-              <div class="sub-actions">
-                <button type="button" class="icon-btn edit-ex-btn">✎</button>
-              </div>
-            </div>
-
-            <button class="add-ex-btn" data-group="腿">＋ 新增腿部動作</button>
-          </div>
-        </div>
-
-        <!--=== 肩部 ===-->
-        <div class="group" data-group="肩">
-          <div class="group-header">
-            <div class="group-name">肩部</div>
-            <div class="group-toggle">▶</div>
-          </div>
-          <div class="sub-list">
-            <div class="sub-header-row">
-              <div class="sub-header-handle"></div>
-              <div class="sub-header-main">動作</div>
-              <div class="sub-header-inputs">
-                <span>重量 kg</span>
-                <span>次數</span>
-                <span>組數</span>
-              </div>
-              <div class="sub-header-actions"></div>
-            </div>
-
-            <div class="sub-row" draggable="true" data-name="啞鈴肩推">
-              <div class="sub-handle">☰</div>
-              <div class="sub-main">
-                <div class="sub-title">啞鈴肩推</div>
-                <div class="sub-muscle">三角肌前中束</div>
-              </div>
-              <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量">
-                <input class="reps-input" type="number" placeholder="次數">
-                <input class="sets-input" type="number" placeholder="組數">
-              </div>
-              <div class="sub-actions">
-                <button type="button" class="icon-btn edit-ex-btn">✎</button>
-              </div>
-            </div>
-
-            <div class="sub-row" draggable="true" data-name="側平舉">
-              <div class="sub-handle">☰</div>
-              <div class="sub-main">
-                <div class="sub-title">側平舉</div>
-                <div class="sub-muscle">三角肌中束</div>
-              </div>
-              <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="重量">
-                <input class="reps-input" type="number" placeholder="次數">
-                <input class="sets-input" type="number" placeholder="組數">
-              </div>
-              <div class="sub-actions">
-                <button type="button" class="icon-btn edit-ex-btn">✎</button>
-              </div>
-            </div>
-
-            <button class="add-ex-btn" data-group="肩">＋ 新增肩部動作</button>
-          </div>
-        </div>
-
-        <!--=== 有氧 ===-->
-        <div class="group" data-group="有氧">
-          <div class="group-header">
-            <div class="group-name">有氧</div>
-            <div class="group-toggle">▶</div>
-          </div>
-          <div class="sub-list">
-            <div class="sub-header-row">
-              <div class="sub-header-handle"></div>
-              <div class="sub-header-main">動作</div>
-              <div class="sub-header-inputs">
-                <span>強度</span>
-                <span>時間</span>
-                <span>組 / 間歇</span>
-              </div>
-              <div class="sub-header-actions"></div>
-            </div>
-
-            <div class="sub-row" draggable="true" data-name="跑步機">
-              <div class="sub-handle">☰</div>
-              <div class="sub-main">
-                <div class="sub-title">跑步機</div>
-                <div class="sub-muscle">心肺 / 下肢</div>
-              </div>
-              <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="強度">
-                <input class="reps-input" type="number" placeholder="時間">
-                <input class="sets-input" type="number" placeholder="組 / 間歇">
-              </div>
-              <div class="sub-actions">
-                <button type="button" class="icon-btn edit-ex-btn">✎</button>
-              </div>
-            </div>
-
-            <div class="sub-row" draggable="true" data-name="飛輪車">
-              <div class="sub-handle">☰</div>
-              <div class="sub-main">
-                <div class="sub-title">飛輪車</div>
-                <div class="sub-muscle">腿部 / 心肺</div>
-              </div>
-              <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="強度">
-                <input class="reps-input" type="number" placeholder="時間">
-                <input class="sets-input" type="number" placeholder="組 / 間歇">
-              </div>
-              <div class="sub-actions">
-                <button type="button" class="icon-btn edit-ex-btn">✎</button>
-              </div>
-            </div>
-
-            <div class="sub-row" draggable="true" data-name="跳繩">
-              <div class="sub-handle">☰</div>
-              <div class="sub-main">
-                <div class="sub-title">跳繩</div>
-                <div class="sub-muscle">小腿 / 心肺</div>
-              </div>
-              <div class="sub-inputs">
-                <input class="weight-input" type="number" placeholder="強度">
-                <input class="reps-input" type="number" placeholder="時間">
-                <input class="sets-input" type="number" placeholder="組數">
-              </div>
-              <div class="sub-actions">
-                <button type="button" class="icon-btn edit-ex-btn">✎</button>
-              </div>
-            </div>
-
-            <button class="add-ex-btn" data-group="有氧">＋ 新增有氧動作</button>
-          </div>
-        </div>
-      </div>
-
-      <div id="saveStatus" class="status-text"></div>
+      <div id="status" class="status"></div>
     </section>
   </main>
 
   <script>
-    const STORAGE_KEY = "trainingV3";
+    /*******************************
+     * Storage Schema (Single Key)
+     *******************************/
+    const STORAGE_KEY = "fitness_workouts_v1";
 
-    function formatDate(d) {
+    function todayStr() {
+      const d = new Date();
       const y = d.getFullYear();
       const m = String(d.getMonth() + 1).padStart(2, "0");
       const day = String(d.getDate()).padStart(2, "0");
       return `${y}-${m}-${day}`;
     }
 
-    /* ===== 儲存 / 讀取 ===== */
-    function loadAll() {
+    function loadAllSessions() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         return raw ? JSON.parse(raw) : [];
@@ -865,100 +498,194 @@
       }
     }
 
-    function saveAll(data) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    function saveAllSessions(arr) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
     }
 
-    function clearAllInputs() {
-      document.querySelectorAll(".sub-row").forEach((row) => {
-        row.querySelector(".weight-input").value = "";
-        row.querySelector(".reps-input").value = "";
-        row.querySelector(".sets-input").value = "";
-      });
+    function setStatus(msg, type) {
+      const el = document.getElementById("status");
+      el.textContent = msg || "";
+      el.classList.remove("ok", "warn");
+      if (type === "ok") el.classList.add("ok");
+      if (type === "warn") el.classList.add("warn");
     }
 
-    function loadDataForDate(dateStr) {
-      const all = loadAll();
-      const found = all.find((d) => d.date === dateStr);
+    /*******************************
+     * Default exercise library
+     *******************************/
+    const DEFAULT_GROUPS = [
+      {
+        group: "胸部",
+        exercises: [
+          { name: "平板啞鈴臥推", muscle: "胸大肌 / 肱三頭肌" },
+          { name: "上斜啞鈴臥推", muscle: "上胸 / 肱三頭肌" },
+          { name: "啞鈴飛鳥", muscle: "胸大肌伸展" }
+        ]
+      },
+      {
+        group: "背部",
+        exercises: [
+          { name: "引體向上", muscle: "背闊肌 / 肱二頭肌" },
+          { name: "高位下拉", muscle: "背闊肌" },
+          { name: "坐姿划船", muscle: "菱形肌 / 斜方肌 / 二頭" }
+        ]
+      },
+      {
+        group: "腿部",
+        exercises: [
+          { name: "深蹲", muscle: "股四頭 / 臀" },
+          { name: "腿推機", muscle: "股四頭 / 臀" },
+          { name: "羅馬尼亞硬舉", muscle: "腿後肌 / 臀" }
+        ]
+      },
+      {
+        group: "肩部",
+        exercises: [
+          { name: "啞鈴肩推", muscle: "三角肌前中束" },
+          { name: "側平舉", muscle: "三角肌中束" }
+        ]
+      },
+      {
+        group: "有氧",
+        exercises: [
+          { name: "跑步機", muscle: "心肺 / 下肢" },
+          { name: "飛輪車", muscle: "腿部 / 心肺" },
+          { name: "跳繩", muscle: "小腿 / 心肺" }
+        ],
+        cardioMode: true
+      }
+    ];
 
-      clearAllInputs();
+    /*******************************
+     * UI State: exercise definitions (order + custom)
+     *******************************/
+    const UI_KEY = "fitness_ui_v1";
 
-      if (found && Array.isArray(found.records)) {
-        found.records.forEach((r) => {
-          const selector = `.group[data-group="${r.group}"] .sub-row[data-name="${r.name}"]`;
-          const row = document.querySelector(selector);
-          if (row) {
-            row.querySelector(".weight-input").value = r.weight ?? "";
-            row.querySelector(".reps-input").value = r.reps ?? "";
-            row.querySelector(".sets-input").value = r.sets ?? "";
-          }
-        });
-        setStatus("已載入 " + dateStr + " 的訓練紀錄。", "ok");
-      } else {
-        setStatus("尚未有這天的紀錄。", "warn");
+    function loadUI() {
+      try {
+        const raw = localStorage.getItem(UI_KEY);
+        if (!raw) return DEFAULT_GROUPS;
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed) || parsed.length === 0) return DEFAULT_GROUPS;
+        return parsed;
+      } catch {
+        return DEFAULT_GROUPS;
       }
     }
 
-    function setStatus(text, type) {
-      const el = document.getElementById("saveStatus");
-      el.textContent = text;
-      el.classList.remove("status-ok", "status-warn");
-      if (type === "ok") el.classList.add("status-ok");
-      if (type === "warn") el.classList.add("status-warn");
+    function saveUI(ui) {
+      localStorage.setItem(UI_KEY, JSON.stringify(ui));
+    }
+
+    let uiGroups = loadUI();
+
+    /*******************************
+     * Theme
+     *******************************/
+    function applyTheme(theme) {
+      document.body.classList.remove("dark", "iceland", "miyako");
+      if (theme === "dark") document.body.classList.add("dark");
+      if (theme === "iceland") document.body.classList.add("iceland");
+      if (theme === "miyako") document.body.classList.add("miyako");
+      localStorage.setItem("workoutTheme", theme);
+    }
+
+    /*******************************
+     * Sessions helpers
+     *******************************/
+    function latestSessionDate() {
+      const all = loadAllSessions();
+      if (!all.length) return null;
+      all.sort((a,b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+      return all[all.length - 1].date;
+    }
+
+    function findSession(dateStr) {
+      const all = loadAllSessions();
+      return all.find(s => s.date === dateStr) || null;
     }
 
     function collectRecordsFromUI() {
       const records = [];
-      document.querySelectorAll(".group").forEach((group) => {
-        const groupName = group.getAttribute("data-group");
-        group.querySelectorAll(".sub-row").forEach((row) => {
-          const name = row.getAttribute("data-name");
-          const weight = row.querySelector(".weight-input").value;
-          const reps = row.querySelector(".reps-input").value;
-          const sets = row.querySelector(".sets-input").value;
+      document.querySelectorAll(".exercise-row").forEach(row => {
+        const group = row.getAttribute("data-group");
+        const name = row.getAttribute("data-name");
+        const muscle = row.getAttribute("data-muscle") || "";
 
-          if (weight || reps || sets) {
-            records.push({
-              group: groupName,
-              name,
-              weight: weight ? Number(weight) : null,
-              reps: reps ? Number(reps) : null,
-              sets: sets ? Number(sets) : null,
-            });
-          }
-        });
+        const w = row.querySelector(".in-weight").value;
+        const r = row.querySelector(".in-reps").value;
+        const s = row.querySelector(".in-sets").value;
+
+        if (w || r || s) {
+          records.push({
+            group, name, muscle,
+            weight: w ? Number(w) : null,
+            reps: r ? Number(r) : null,
+            sets: s ? Number(s) : null
+          });
+        }
       });
       return records;
     }
 
-    /* ===== 歷史查詢 ===== */
+    function clearInputs() {
+      document.querySelectorAll(".exercise-row").forEach(row => {
+        row.querySelector(".in-weight").value = "";
+        row.querySelector(".in-reps").value = "";
+        row.querySelector(".in-sets").value = "";
+      });
+    }
+
+    function loadSessionToUI(dateStr) {
+      clearInputs();
+      const sess = findSession(dateStr);
+      if (!sess || !Array.isArray(sess.records)) return;
+
+      sess.records.forEach(rec => {
+        const selector = `.exercise-row[data-group="${cssEscape(rec.group)}"][data-name="${cssEscape(rec.name)}"]`;
+        const row = document.querySelector(selector);
+        if (!row) return;
+        row.querySelector(".in-weight").value = rec.weight ?? "";
+        row.querySelector(".in-reps").value = rec.reps ?? "";
+        row.querySelector(".in-sets").value = rec.sets ?? "";
+      });
+    }
+
+    function groupLastDate(groupName) {
+      const all = loadAllSessions();
+      if (!all.length) return null;
+
+      let best = null;
+      all.forEach(sess => {
+        const has = sess.records?.some(r => r.group === groupName);
+        if (has) {
+          if (!best || sess.date > best) best = sess.date;
+        }
+      });
+      return best;
+    }
+
+    /*******************************
+     * History panel
+     *******************************/
     function rebuildHistoryExerciseOptions() {
-      const all = loadAll();
-      const set = new Set();
-
-      document.querySelectorAll(".sub-row").forEach((row) => {
-        const name = row.getAttribute("data-name");
-        if (name) set.add(name);
-      });
-
-      all.forEach((day) => {
-        if (!Array.isArray(day.records)) return;
-        day.records.forEach((r) => {
-          if (r.name) set.add(r.name);
-        });
-      });
-
       const select = document.getElementById("historyExerciseSelect");
       const current = select.value;
+
+      const set = new Set();
+      // UI exercises
+      uiGroups.forEach(g => g.exercises.forEach(ex => set.add(ex.name)));
+      // saved exercises
+      loadAllSessions().forEach(sess => sess.records?.forEach(r => set.add(r.name)));
+
+      const names = Array.from(set).sort((a,b) => a.localeCompare(b, "zh-Hant"));
       select.innerHTML = `<option value="">請選擇</option>`;
-      Array.from(set)
-        .sort()
-        .forEach((name) => {
-          const opt = document.createElement("option");
-          opt.value = name;
-          opt.textContent = name;
-          select.appendChild(opt);
-        });
+      names.forEach(n => {
+        const opt = document.createElement("option");
+        opt.value = n;
+        opt.textContent = n;
+        select.appendChild(opt);
+      });
 
       if (current && set.has(current)) {
         select.value = current;
@@ -970,27 +697,22 @@
     }
 
     function showHistoryForExercise(name) {
-      const all = loadAll().slice().sort((a, b) =>
-        a.date < b.date ? -1 : a.date > b.date ? 1 : 0
-      );
       const container = document.getElementById("historyList");
-      container.innerHTML = "";
+      const all = loadAllSessions().slice().sort((a,b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
 
-      const filtered = [];
-      all.forEach((day) => {
-        const match = day.records?.find((r) => r.name === name);
-        if (match) {
-          filtered.push({ date: day.date, ...match });
-        }
+      const rows = [];
+      all.forEach(sess => {
+        const match = sess.records?.find(r => r.name === name);
+        if (match) rows.push({ date: sess.date, ...match });
       });
 
-      if (filtered.length === 0) {
-        container.innerHTML =
-          `<div style="color:var(--subtext);">這個動作目前沒有紀錄。</div>`;
+      if (rows.length === 0) {
+        container.innerHTML = `<div style="color:var(--subtext);">這個動作目前沒有紀錄。</div>`;
         return;
       }
 
-      filtered.forEach((item) => {
+      container.innerHTML = "";
+      rows.forEach(item => {
         const div = document.createElement("div");
         div.className = "history-item";
         div.innerHTML = `
@@ -1004,264 +726,360 @@
       });
     }
 
-    /* ===== 主題切換 ===== */
-    function applyTheme(theme) {
-      document.body.classList.remove("dark", "iceland");
-      if (theme === "dark") document.body.classList.add("dark");
-      if (theme === "iceland") document.body.classList.add("iceland");
-      localStorage.setItem("workoutTheme", theme);
-    }
-
-    /* ===== 拖曳排序 ===== */
-    function enableDrag(container) {
+    /*******************************
+     * Drag and drop per group
+     *******************************/
+    function enableDragWithinGroup(groupBodyEl, groupName) {
       let draggingEl = null;
 
-      container.addEventListener("dragstart", (e) => {
-        const handle = e.target.closest(".sub-handle");
+      groupBodyEl.addEventListener("dragstart", (e) => {
+        const handle = e.target.closest(".handle");
         if (!handle) {
           e.preventDefault();
           return;
         }
-        const row = handle.closest(".sub-row");
+        const row = handle.closest(".exercise-row");
         draggingEl = row;
         row.classList.add("dragging");
       });
 
-      container.addEventListener("dragend", (e) => {
-        const row = e.target.closest(".sub-row");
+      groupBodyEl.addEventListener("dragend", (e) => {
+        const row = e.target.closest(".exercise-row");
         if (row) row.classList.remove("dragging");
         draggingEl = null;
+
+        // persist order back to uiGroups
+        persistGroupOrderFromDOM(groupName, groupBodyEl);
       });
 
-      container.addEventListener("dragover", (e) => {
+      groupBodyEl.addEventListener("dragover", (e) => {
         e.preventDefault();
-        const afterElement = getDragAfterElement(container, e.clientY);
         if (!draggingEl) return;
-        const addBtn = container.querySelector(".add-ex-btn");
 
-        if (!afterElement || afterElement === addBtn) {
-          container.insertBefore(draggingEl, addBtn);
+        const after = getDragAfterElement(groupBodyEl, e.clientY);
+        const addBtn = groupBodyEl.querySelector(".add-btn");
+
+        if (!after) {
+          groupBodyEl.insertBefore(draggingEl, addBtn);
         } else {
-          container.insertBefore(draggingEl, afterElement);
+          groupBodyEl.insertBefore(draggingEl, after);
         }
       });
     }
 
     function getDragAfterElement(container, y) {
-      const draggableElements = [
-        ...container.querySelectorAll(".sub-row:not(.dragging)"),
-      ];
+      const candidates = [...container.querySelectorAll(".exercise-row:not(.dragging)")];
       let closest = { offset: Number.NEGATIVE_INFINITY, element: null };
 
-      draggableElements.forEach((child) => {
+      candidates.forEach(child => {
         const box = child.getBoundingClientRect();
         const offset = y - box.top - box.height / 2;
         if (offset < 0 && offset > closest.offset) {
           closest = { offset, element: child };
         }
       });
+
       return closest.element;
     }
 
-    /* ===== 新增動作 ===== */
-    function addExerciseRow(groupEl, groupName, name, muscle) {
-      const list = groupEl.querySelector(".sub-list");
-      const addBtn = list.querySelector(".add-ex-btn");
+    function persistGroupOrderFromDOM(groupName, groupBodyEl) {
+      const group = uiGroups.find(g => g.group === groupName);
+      if (!group) return;
 
-      const row = document.createElement("div");
-      row.className = "sub-row";
-      row.setAttribute("draggable", "true");
-      row.setAttribute("data-name", name);
+      const orderedNames = [...groupBodyEl.querySelectorAll(".exercise-row")]
+        .map(r => r.getAttribute("data-name"));
 
-      const isCardio = groupName === "有氧";
-      let inputsHTML;
+      const map = new Map(group.exercises.map(ex => [ex.name, ex]));
+      const newArr = [];
+      orderedNames.forEach(n => {
+        if (map.has(n)) newArr.push(map.get(n));
+      });
 
-      if (isCardio) {
-        inputsHTML = `
-          <div class="sub-inputs">
-            <input class="weight-input" type="number" placeholder="強度">
-            <input class="reps-input" type="number" placeholder="時間">
-            <input class="sets-input" type="number" placeholder="組 / 間歇">
-          </div>
-        `;
-      } else {
-        inputsHTML = `
-          <div class="sub-inputs">
-            <input class="weight-input" type="number" placeholder="重量">
-            <input class="reps-input" type="number" placeholder="次數">
-            <input class="sets-input" type="number" placeholder="組數">
-          </div>
-        `;
-      }
+      // include any missing (safety)
+      group.exercises.forEach(ex => {
+        if (!orderedNames.includes(ex.name)) newArr.push(ex);
+      });
 
-      row.innerHTML = `
-        <div class="sub-handle">☰</div>
-        <div class="sub-main">
-          <div class="sub-title">${name}</div>
-          <div class="sub-muscle">${muscle || ""}</div>
-        </div>
-        ${inputsHTML}
-        <div class="sub-actions">
-          <button type="button" class="icon-btn edit-ex-btn">✎</button>
-        </div>
-      `;
-
-      list.insertBefore(row, addBtn);
+      group.exercises = newArr;
+      saveUI(uiGroups);
     }
 
-    /* ===== 最近一次訓練 ===== */
-    function loadLatestSession() {
-      const all = loadAll();
-      const labelEl = document.getElementById("currentDateLabel");
+    /*******************************
+     * Build UI
+     *******************************/
+    function renderApp() {
+      const container = document.getElementById("groupsContainer");
+      container.innerHTML = "";
 
-      if (!all.length) {
-        clearAllInputs();
-        labelEl.textContent = "目前顯示：尚未有訓練紀錄";
-        setStatus("尚未有訓練紀錄，先填寫一次吧。", "warn");
+      uiGroups.forEach(g => {
+        const last = groupLastDate(g.group);
+        const groupEl = document.createElement("div");
+        groupEl.className = "group";
+        groupEl.setAttribute("data-group", g.group);
+
+        groupEl.innerHTML = `
+          <div class="group-header">
+            <div class="group-header-left">
+              <div class="group-name">${g.group}</div>
+              <div class="group-last">${last ? last : "尚無紀錄"}</div>
+            </div>
+            <div class="group-toggle">▶</div>
+          </div>
+
+          <div class="group-body">
+            <div class="grid-header">
+              <div></div>
+              <div class="h h-name">動作</div>
+              <div class="h">重量 kg</div>
+              <div class="h">次數</div>
+              <div class="h">組數</div>
+              <div></div>
+            </div>
+
+            ${g.exercises.map(ex => exerciseRowHTML(g.group, ex)).join("")}
+
+            <button class="add-btn" data-group="${g.group}">＋ 新增動作</button>
+          </div>
+        `;
+
+        container.appendChild(groupEl);
+
+        // toggle
+        const header = groupEl.querySelector(".group-header");
+        header.addEventListener("click", () => {
+          groupEl.classList.toggle("open");
+        });
+
+        // drag enabled within group body
+        enableDragWithinGroup(groupEl.querySelector(".group-body"), g.group);
+      });
+
+      // load latest session into UI
+      const lastDate = latestSessionDate();
+      if (lastDate) {
+        loadSessionToUI(lastDate);
+        setStatus("已載入最近一次訓練紀錄：" + lastDate, "ok");
+      } else {
+        setStatus("尚未有訓練紀錄，填寫後按右上角 ⋯ → 儲存。", "warn");
+      }
+
+      rebuildHistoryExerciseOptions();
+    }
+
+    function exerciseRowHTML(groupName, ex) {
+      return `
+        <div class="exercise-row" draggable="true"
+             data-group="${escapeAttr(groupName)}"
+             data-name="${escapeAttr(ex.name)}"
+             data-muscle="${escapeAttr(ex.muscle || "")}">
+          <div class="handle">☰</div>
+
+          <div>
+            <div class="ex-title">${escapeHTML(ex.name)}</div>
+            <div class="ex-muscle">${escapeHTML(ex.muscle || "")}</div>
+          </div>
+
+          <div class="cell"><input class="in-weight" type="number" inputmode="decimal" placeholder="kg"></div>
+          <div class="cell"><input class="in-reps" type="number" inputmode="numeric" placeholder="次"></div>
+          <div class="cell"><input class="in-sets" type="number" inputmode="numeric" placeholder="組"></div>
+
+          <div class="action">
+            <button type="button" class="icon-btn ex-edit-btn" title="編輯 / 刪除">✎</button>
+          </div>
+        </div>
+      `;
+    }
+
+    /*******************************
+     * Actions (Add / Edit / Delete)
+     *******************************/
+    function addExercise(groupName) {
+      const name = prompt(`新增「${groupName}」動作名稱：`);
+      if (!name) return;
+
+      const muscle = prompt("主要訓練肌群（可留白）：") || "";
+
+      const group = uiGroups.find(g => g.group === groupName);
+      if (!group) return;
+
+      // prevent duplicate names within same group
+      const exists = group.exercises.some(ex => ex.name === name);
+      if (exists) {
+        alert("此肌群已存在同名動作。");
         return;
       }
 
-      all.sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
-      const last = all[all.length - 1];
-      labelEl.textContent = "目前顯示：" + last.date + "（最近一次）";
-      loadDataForDate(last.date);
+      group.exercises.push({ name, muscle });
+      saveUI(uiGroups);
+      renderApp();
     }
 
-    /* ===== 初始化 ===== */
+    function editOrDeleteExercise(groupName, exName) {
+      const group = uiGroups.find(g => g.group === groupName);
+      if (!group) return;
+
+      const ex = group.exercises.find(x => x.name === exName);
+      if (!ex) return;
+
+      const choice = prompt(
+        `動作：「${exName}」\n輸入 1：編輯\n輸入 2：刪除`,
+        "1"
+      );
+      if (!choice) return;
+
+      if (choice === "2") {
+        if (!confirm(`確定刪除「${exName}」？`)) return;
+        group.exercises = group.exercises.filter(x => x.name !== exName);
+        saveUI(uiGroups);
+        renderApp();
+        return;
+      }
+
+      if (choice === "1") {
+        const newName = prompt("動作名稱：", ex.name);
+        if (!newName) return;
+        const newMuscle = prompt("主要肌群（可留白）：", ex.muscle || "") || "";
+
+        // handle rename duplicates
+        if (newName !== ex.name && group.exercises.some(x => x.name === newName)) {
+          alert("此肌群已存在同名動作。");
+          return;
+        }
+
+        // update UI exercise definition
+        ex.name = newName;
+        ex.muscle = newMuscle;
+
+        // also update historical records names (optional but practical)
+        // to keep history connected after rename
+        const sessions = loadAllSessions();
+        sessions.forEach(sess => {
+          sess.records?.forEach(r => {
+            if (r.group === groupName && r.name === exName) {
+              r.name = newName;
+              r.muscle = newMuscle;
+            }
+          });
+        });
+        saveAllSessions(sessions);
+
+        saveUI(uiGroups);
+        renderApp();
+      }
+    }
+
+    /*******************************
+     * Save today
+     *******************************/
+    function saveToday() {
+      const dateStr = todayStr();
+      const records = collectRecordsFromUI();
+      const all = loadAllSessions();
+      const idx = all.findIndex(s => s.date === dateStr);
+
+      if (records.length === 0) {
+        if (idx >= 0) {
+          all.splice(idx, 1);
+          saveAllSessions(all);
+          setStatus("已刪除今天空白紀錄。", "warn");
+        } else {
+          setStatus("沒有可儲存的內容。", "warn");
+        }
+        renderApp();
+        return;
+      }
+
+      const newSession = { date: dateStr, records };
+      if (idx >= 0) all[idx] = newSession;
+      else all.push(newSession);
+
+      saveAllSessions(all);
+      setStatus("已儲存今天訓練：" + dateStr, "ok");
+      renderApp();
+    }
+
+    /*******************************
+     * Utilities
+     *******************************/
+    function escapeHTML(str) {
+      return String(str).replace(/[&<>"']/g, s => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+      }[s]));
+    }
+
+    function escapeAttr(str) {
+      return escapeHTML(str).replace(/"/g, "&quot;");
+    }
+
+    // for querySelector attribute exact match: escape special chars
+    function cssEscape(str) {
+      // minimal escape for quotes/backslashes; enough for typical names
+      return String(str).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+    }
+
+    /*******************************
+     * Events
+     *******************************/
     document.addEventListener("DOMContentLoaded", () => {
-      // 工具面板開關
+      // Theme init
+      const themeSelector = document.getElementById("themeSelector");
+      const savedTheme = localStorage.getItem("workoutTheme") || "miyako";
+      themeSelector.value = savedTheme;
+      applyTheme(savedTheme);
+      themeSelector.addEventListener("change", () => applyTheme(themeSelector.value));
+
+      // Tools panel open/close
       const toolsBtn = document.getElementById("toolsBtn");
       const toolsPanel = document.getElementById("toolsPanel");
+
       toolsBtn.addEventListener("click", (e) => {
         e.stopPropagation();
         toolsPanel.classList.toggle("open");
-        if (toolsPanel.classList.contains("open")) {
-          rebuildHistoryExerciseOptions();
-        }
+        toolsPanel.setAttribute("aria-hidden", toolsPanel.classList.contains("open") ? "false" : "true");
+        if (toolsPanel.classList.contains("open")) rebuildHistoryExerciseOptions();
       });
 
-      // 點畫面空白處關閉面板
       document.addEventListener("click", (e) => {
         if (!e.target.closest("#toolsPanel") && !e.target.closest("#toolsBtn")) {
           toolsPanel.classList.remove("open");
+          toolsPanel.setAttribute("aria-hidden", "true");
         }
       });
 
-      // 主題
-      const themeSelector = document.getElementById("themeSelector");
-      const savedTheme = localStorage.getItem("workoutTheme") || "light";
-      themeSelector.value = savedTheme;
-      applyTheme(savedTheme);
-      themeSelector.addEventListener("change", () => {
-        applyTheme(themeSelector.value);
+      // Save
+      document.getElementById("saveBtn").addEventListener("click", () => saveToday());
+
+      // History select
+      document.getElementById("historyExerciseSelect").addEventListener("change", (e) => {
+        const name = e.target.value;
+        if (!name) {
+          document.getElementById("historyList").innerHTML =
+            `<div style="color:var(--subtext);">尚未選擇動作或尚無紀錄。</div>`;
+          return;
+        }
+        showHistoryForExercise(name);
       });
 
-      // 展開 / 收合群組
-      document.querySelectorAll(".group-header").forEach((header) => {
-        header.addEventListener("click", () => {
-          const group = header.closest(".group");
-          group.classList.toggle("open");
-        });
-      });
-
-      // 拖曳啟用
-      document.querySelectorAll(".group .sub-list").forEach((list) => {
-        enableDrag(list);
-      });
-
-      // 新增動作
-      document.querySelectorAll(".add-ex-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const groupName = btn.getAttribute("data-group");
-          const groupEl = btn.closest(".group");
-          const name = prompt(`新增「${groupName}」動作名稱：`);
-          if (!name) return;
-          const muscle = prompt("這個動作主要訓練的肌群（可留白）：") || "";
-          addExerciseRow(groupEl, groupName, name, muscle);
-          rebuildHistoryExerciseOptions();
-        });
-      });
-
-      // 編輯 / 刪除整合在鉛筆
+      // Delegate: add / edit
       document.addEventListener("click", (e) => {
-        const editBtn = e.target.closest(".edit-ex-btn");
+        const addBtn = e.target.closest(".add-btn");
+        if (addBtn) {
+          const groupName = addBtn.getAttribute("data-group");
+          addExercise(groupName);
+          return;
+        }
+
+        const editBtn = e.target.closest(".ex-edit-btn");
         if (editBtn) {
-          const row = editBtn.closest(".sub-row");
-          const titleEl = row.querySelector(".sub-title");
-          const muscleEl = row.querySelector(".sub-muscle");
-          const oldName = titleEl.textContent.trim();
-          const oldMuscle = muscleEl.textContent.trim();
-
-          const choice = prompt(
-            `動作：「${oldName}」\n` +
-            `輸入 1：編輯名稱與肌群\n` +
-            `輸入 2：刪除此動作`,
-            "1"
-          );
-          if (!choice) return;
-          if (choice === "2") {
-            if (confirm(`確定要刪除「${oldName}」嗎？`)) {
-              row.remove();
-              rebuildHistoryExerciseOptions();
-            }
-            return;
-          }
-          if (choice === "1") {
-            const newName = prompt("編輯動作名稱：", oldName);
-            if (!newName) return;
-            const newMuscle = prompt("編輯主要肌群（可留白）：", oldMuscle) || "";
-            titleEl.textContent = newName;
-            muscleEl.textContent = newMuscle;
-            row.setAttribute("data-name", newName);
-            rebuildHistoryExerciseOptions();
-          }
+          const row = editBtn.closest(".exercise-row");
+          const groupName = row.getAttribute("data-group");
+          const exName = row.getAttribute("data-name");
+          editOrDeleteExercise(groupName, exName);
+          return;
         }
       });
 
-      // 儲存（記為今天）
-      document.getElementById("saveBtn").addEventListener("click", () => {
-        const dateStr = formatDate(new Date());
-        const records = collectRecordsFromUI();
-        const all = loadAll();
-        const idx = all.findIndex((d) => d.date === dateStr);
-
-        if (records.length === 0) {
-          if (idx >= 0) {
-            all.splice(idx, 1);
-            saveAll(all);
-            setStatus("已刪除此日期的紀錄。", "warn");
-          } else {
-            setStatus("沒有可儲存的內容。", "warn");
-          }
-        } else {
-          const newObj = { date: dateStr, records };
-          if (idx >= 0) all[idx] = newObj;
-          else all.push(newObj);
-          saveAll(all);
-          setStatus("已儲存 " + dateStr + " 的訓練紀錄。", "ok");
-        }
-
-        document.getElementById("currentDateLabel").textContent =
-          "目前顯示：" + dateStr + "（最近一次）";
-        rebuildHistoryExerciseOptions();
-      });
-
-      // 歷史下拉
-      document
-        .getElementById("historyExerciseSelect")
-        .addEventListener("change", (e) => {
-          const name = e.target.value;
-          if (!name) {
-            document.getElementById("historyList").innerHTML =
-              `<div style="color:var(--subtext);">尚未選擇動作或尚無紀錄。</div>`;
-            return;
-          }
-          showHistoryForExercise(name);
-        });
-
-      // 載入最近一次
-      loadLatestSession();
-      rebuildHistoryExerciseOptions();
+      renderApp();
     });
   </script>
 </body>

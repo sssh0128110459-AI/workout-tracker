@@ -88,7 +88,7 @@
     h1 {
       margin: 0;
       font-size: 20px;
-      font-weight: 600; /* 你說太粗：這裡已降重 */
+      font-weight: 600; 
       letter-spacing: 0.3px;
     }
 
@@ -132,7 +132,41 @@
       color: var(--text);
     }
     .btn-mini:hover { background: var(--accent-soft); }
+/* =========================
+   Timer – Rest preset layout
+========================= */
 
+.timer-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.rest-config {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.rest-config-label {
+  font-size: 12px;
+  color: var(--subtext);
+  font-weight: 600;
+}
+
+/* 休息時間選單樣式 */
+#restPreset {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-size: 12px;
+}
+
+    
     /* =========================
        TIMER UI
     ========================== */
@@ -507,11 +541,22 @@
 
   <main>
     <!-- Timer Card -->
-    <section class="card" id="timerCard">
-      <div class="timer-top">
-        <div class="timer-label" id="timerMode">訓練計時</div>
-        <div class="timer-clock" id="timerClock">00:00</div>
-      </div>
+    <div class="timer-top">
+  <div class="timer-top-row">
+    <div class="timer-label" id="timerMode">訓練計時</div>
+
+    <div class="rest-config">
+      <span class="rest-config-label">休息</span>
+      <select id="restPreset">
+        <option value="30">30 秒</option>
+        <option value="60" selected>60 秒</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="timer-clock" id="timerClock">00:00</div>
+</div>
+
 
       <div class="timer-controls">
         <button class="timer-btn" id="timerStartBtn">開始</button>

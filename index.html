@@ -88,7 +88,7 @@
     h1 {
       margin: 0;
       font-size: 20px;
-      font-weight: 600; 
+      font-weight: 600;
       letter-spacing: 0.3px;
     }
 
@@ -119,7 +119,7 @@
 
     .topbar-title {
       font-size: 16px;
-      font-weight: 600; /* 降重 */
+      font-weight: 600;
     }
 
     .btn-mini {
@@ -132,68 +132,62 @@
       color: var(--text);
     }
     .btn-mini:hover { background: var(--accent-soft); }
-/* =========================
-   Timer – Rest preset layout
-========================= */
 
-.timer-top-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.rest-config {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.rest-config-label {
-  font-size: 12px;
-  color: var(--subtext);
-  font-weight: 600;
-}
-
-/* 休息時間選單樣式 */
-#restPreset {
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text);
-  font-size: 12px;
-}
-
-    
     /* =========================
        TIMER UI
     ========================== */
     #timerCard { margin-top: 0; }
 
-  .timer-top{
-  display:flex;
-  flex-direction:column;
-  align-items:center;        /* 水平置中 */
-  justify-content:center;
-  gap:6px;
-  margin-bottom:12px;
-}
+    .timer-top{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-bottom:10px;
+    }
 
-.timer-label{
-  font-size:16px;            /* 與 .topbar-title 一樣 */
-  font-weight:600;
-  color:var(--text);
-  text-align:center;
-}
+    .timer-top-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
 
-.timer-clock{
-  font-size:16px;            /* 關鍵：跟標題同級 */
-  font-weight:600;
-  letter-spacing:0.5px;
-  text-align:center;
-}
+    .timer-label{
+      font-size:14px;
+      color:var(--subtext);
+      font-weight:600;
+    }
+
+    .rest-config{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-shrink:0;
+    }
+
+    .rest-config-label{
+      font-size:12px;
+      color:var(--subtext);
+      font-weight:600;
+    }
+
+    #restPreset{
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:var(--card);
+      color:var(--text);
+      font-size:12px;
+    }
+
+    .timer-clock{
+      font-size:30px;
+      font-weight:600;
+      letter-spacing:1px;
+      line-height:1.1;
+      text-align:center;
+      font-variant-numeric: tabular-nums;
+    }
 
     .timer-controls{
       display:grid;
@@ -249,7 +243,7 @@
     }
 
     @media (max-width:560px){
-      .timer-clock{ font-size:30px; }
+      .timer-clock{ font-size:28px; }
       .timer-btn{ padding:9px 10px; }
     }
 
@@ -338,6 +332,10 @@
       font-size: 12px;
     }
 
+    body.miyako .history-list {
+      background: rgba(0,175,192,0.06);
+    }
+
     .history-item {
       display: flex;
       justify-content: space-between;
@@ -382,7 +380,7 @@
 
     .group-name {
       font-size: 15px;
-      font-weight: 650; /* 降重 */
+      font-weight: 650;
       white-space: nowrap;
     }
 
@@ -541,22 +539,22 @@
 
   <main>
     <!-- Timer Card -->
-    <div class="timer-top">
-  <div class="timer-top-row">
-    <div class="timer-label" id="timerMode">訓練計時</div>
+    <section class="card" id="timerCard">
+      <div class="timer-top">
+        <div class="timer-top-row">
+          <div class="timer-label" id="timerMode">訓練計時</div>
 
-    <div class="rest-config">
-      <span class="rest-config-label">休息</span>
-      <select id="restPreset">
-        <option value="30">30 秒</option>
-        <option value="60" selected>60 秒</option>
-      </select>
-    </div>
-  </div>
+          <div class="rest-config">
+            <span class="rest-config-label">休息</span>
+            <select id="restPreset">
+              <option value="30">30 秒</option>
+              <option value="60" selected>60 秒</option>
+            </select>
+          </div>
+        </div>
 
-  <div class="timer-clock" id="timerClock">00:00</div>
-</div>
-
+        <div class="timer-clock" id="timerClock">00:00.000</div>
+      </div>
 
       <div class="timer-controls">
         <button class="timer-btn" id="timerStartBtn">開始</button>
@@ -623,7 +621,8 @@
      * Storage Keys
      *******************************/
     const STORAGE_KEY = "fitness_workouts_v1"; // sessions
-    const UI_KEY = "fitness_ui_v1";           // exercise library/order per group
+    const UI_KEY = "fitness_ui_v1";            // exercise library/order per group
+    const TIMER_KEY = "fitness_timer_v1";      // rest preset, etc.
 
     /*******************************
      * Date helpers
@@ -709,7 +708,7 @@
     ];
 
     /*******************************
-     * Storage: UI (exercise list + order)
+     * Storage: UI
      *******************************/
     function loadUI() {
       try {
@@ -741,63 +740,44 @@
     }
 
     /*******************************
-     * Timer + Set Counter
+     * Timer (High precision to milliseconds)
      *******************************/
-    let timerMode = "workout";
+    // State
+    let timerMode = "workout";     // "workout" | "rest"
     let workoutRunning = false;
     let restRunning = false;
 
-    let workoutSeconds = 0;
-    let restSecondsLeft = 90;
+    let workoutElapsedMs = 0;      // accumulated workout time
+    let workoutStartMark = 0;      // performance.now() at start/resume
 
-    let timerInterval = null;
+    let restPresetSec = 60;        // 30 or 60
+    let restEndMark = 0;           // performance.now() when rest ends
+
+    let rafId = null;
     let setCount = 0;
 
-    function formatClock(sec) {
-      const s = Math.max(0, Math.floor(sec));
-      const mm = String(Math.floor(s / 60)).padStart(2, "0");
-      const ss = String(s % 60).padStart(2, "0");
-      return `${mm}:${ss}`;
-    }
-
-    function renderTimer() {
-      const modeEl = document.getElementById("timerMode");
-      const clockEl = document.getElementById("timerClock");
-
-      if (timerMode === "rest") {
-        modeEl.textContent = "休息倒數";
-        clockEl.textContent = formatClock(restSecondsLeft);
-      } else {
-        modeEl.textContent = "訓練計時";
-        clockEl.textContent = formatClock(workoutSeconds);
+    function loadRestPreset() {
+      try {
+        const raw = localStorage.getItem(TIMER_KEY);
+        if (!raw) return 60;
+        const obj = JSON.parse(raw);
+        const v = Number(obj?.restPresetSec);
+        return (v === 30 || v === 60) ? v : 60;
+      } catch {
+        return 60;
       }
     }
 
-    function startIntervalsIfNeeded() {
-      if (timerInterval) return;
-
-      timerInterval = setInterval(() => {
-        if (workoutRunning) workoutSeconds += 1;
-
-        if (restRunning) {
-          restSecondsLeft -= 1;
-          if (restSecondsLeft <= 0) {
-            restSecondsLeft = 0;
-            restRunning = false;
-            timerMode = "workout";
-            renderTimer();
-            beep();
-          }
-        }
-        renderTimer();
-      }, 1000);
+    function saveRestPreset(sec) {
+      localStorage.setItem(TIMER_KEY, JSON.stringify({ restPresetSec: sec }));
     }
 
-    function stopAllIntervals() {
-      if (timerInterval) {
-        clearInterval(timerInterval);
-        timerInterval = null;
-      }
+    function formatMs(ms) {
+      const t = Math.max(0, Math.floor(ms));
+      const mm = String(Math.floor(t / 60000)).padStart(2, "0");
+      const ss = String(Math.floor((t % 60000) / 1000)).padStart(2, "0");
+      const mmm = String(t % 1000).padStart(3, "0");
+      return `${mm}:${ss}.${mmm}`;
     }
 
     function beep() {
@@ -817,6 +797,51 @@
       } catch {}
     }
 
+    function renderTimer(nowPerf) {
+      const modeEl = document.getElementById("timerMode");
+      const clockEl = document.getElementById("timerClock");
+
+      if (timerMode === "rest") {
+        modeEl.textContent = "休息倒數";
+        const remain = Math.max(0, restEndMark - nowPerf);
+        clockEl.textContent = formatMs(remain);
+      } else {
+        modeEl.textContent = "訓練計時";
+        const live = workoutRunning ? (workoutElapsedMs + (nowPerf - workoutStartMark)) : workoutElapsedMs;
+        clockEl.textContent = formatMs(live);
+      }
+    }
+
+    function stopRaf() {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+
+    function tick(nowPerf) {
+      if (!workoutRunning && !restRunning) {
+        stopRaf();
+        return;
+      }
+
+      renderTimer(nowPerf);
+
+      // rest end check
+      if (restRunning && nowPerf >= restEndMark) {
+        restRunning = false;
+        timerMode = "workout";
+        renderTimer(nowPerf);
+        beep();
+        stopRaf();
+        return;
+      }
+
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function ensureRaf() {
+      if (!rafId) rafId = requestAnimationFrame(tick);
+    }
+
     function appendSetChip(n) {
       const list = document.getElementById("setList");
       const chip = document.createElement("div");
@@ -825,20 +850,29 @@
       list.appendChild(chip);
     }
 
+    function pauseWorkout(nowPerf) {
+      if (!workoutRunning) return;
+      workoutElapsedMs += (nowPerf - workoutStartMark);
+      workoutRunning = false;
+    }
+
     function resetSetsAndTimer() {
+      const now = performance.now();
       workoutRunning = false;
       restRunning = false;
       timerMode = "workout";
-      stopAllIntervals();
 
-      workoutSeconds = 0;
-      restSecondsLeft = 90;
+      workoutElapsedMs = 0;
+      workoutStartMark = now;
+
+      restEndMark = 0;
 
       setCount = 0;
       document.getElementById("setList").innerHTML = "";
 
       document.getElementById("timerStartBtn").textContent = "開始";
-      renderTimer();
+      renderTimer(now);
+      stopRaf();
     }
 
     /*******************************
@@ -1271,40 +1305,75 @@
         }
       });
 
-      // Timer bindings
+      // ===== Timer init =====
       const startBtn = document.getElementById("timerStartBtn");
       const restBtn = document.getElementById("timerRestBtn");
       const resetBtn = document.getElementById("timerResetBtn");
+      const restPresetEl = document.getElementById("restPreset");
 
-      renderTimer();
+      restPresetSec = loadRestPreset();
+      restPresetEl.value = String(restPresetSec);
+
+      restPresetEl.addEventListener("change", () => {
+        const v = Number(restPresetEl.value);
+        restPresetSec = (v === 30 || v === 60) ? v : 60;
+        saveRestPreset(restPresetSec);
+
+        // 若正在休息倒數，立即用新設定重設倒數
+        if (timerMode === "rest") {
+          const now = performance.now();
+          restEndMark = now + restPresetSec * 1000;
+          renderTimer(now);
+          ensureRaf();
+        }
+      });
+
+      // initial render
+      renderTimer(performance.now());
 
       startBtn.addEventListener("click", () => {
+        const now = performance.now();
+
+        // 每按一次開始 -> 新增一組（照你需求）
         setCount += 1;
         appendSetChip(setCount);
 
-        timerMode = "workout";
-        restRunning = false;
-        workoutRunning = true;
+        // 若剛在休息，先結束休息並回訓練
+        if (restRunning) {
+          restRunning = false;
+          timerMode = "workout";
+        }
 
-        startIntervalsIfNeeded();
-        renderTimer();
+        // 若尚未開始訓練計時 -> 開始/續跑
+        if (!workoutRunning) {
+          workoutStartMark = now;
+          workoutRunning = true;
+        }
+
+        startBtn.textContent = "開始"; // 保持簡潔（你不想要太多字）
+        renderTimer(now);
+        ensureRaf();
       });
 
       restBtn.addEventListener("click", () => {
-        workoutRunning = false;
+        const now = performance.now();
 
-        restSecondsLeft = 90; // 休息秒數可改
-        restRunning = true;
+        // 進入休息前，先把訓練累計固定下來
+        pauseWorkout(now);
+
         timerMode = "rest";
+        restRunning = true;
+        restEndMark = now + restPresetSec * 1000;
 
-        startIntervalsIfNeeded();
-        renderTimer();
+        renderTimer(now);
+        ensureRaf();
       });
 
       resetBtn.addEventListener("click", () => {
         resetSetsAndTimer();
       });
 
+      // Render app
       renderApp();
     });
   </script>
